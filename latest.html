@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI'm OK-2026-04-08</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                         "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            padding: 24px 16px;
+        }
+        .container { max-width: 960px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            padding: 48px 0 36px;
+            color: white;
+        }
+        .header .logo { font-size: 56px; margin-bottom: 8px; }
+        .header h1 {
+            font-size: 2.6em;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+        }
+        .header .subtitle {
+            font-size: 1.05em;
+            opacity: 0.9;
+            margin-top: 10px;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+        @media (max-width: 640px) {
+            .cards-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.8em; }
+            .header .logo { font-size: 42px; }
+            .stats { gap: 12px; }
+        }
+        .card {
+            background: #16161e;
+            border-radius: 20px;
+            padding: 22px 24px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 1px solid rgba(255,255,255,0.06);
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+            border-color: rgba(255,255,255,0.12);
+        }
+        .source-badge {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        .badge-intl {
+            background: rgba(26, 115, 232, 0.15);
+            color: #4a9eff;
+        }
+        .badge-domestic {
+            background: rgba(255, 107, 107, 0.15);
+            color: #ff6b6b;
+        }
+        .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; align-items: center; }
+        .tag {
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .tag-llm { background: #e8f0fe; color: #1a73e8; }
+        .tag-biz { background: #fce8e6; color: #d93025; }
+        .tag-open { background: #e6f4ea; color: #137333; }
+        .tag-policy { background: #e8f0fe; color: #1a73e8; }
+        .tag-product { background: #f3e8fd; color: #7c3aed; }
+        .tag-research { background: #e0f7fa; color: #00838f; }
+        .tag-other { background: #f5f5f5; color: #666666; }
+        .tag-domestic { background: #ffe8e8; color: #d93025; }
+        .tag-emoji {
+            font-size: 16px;
+            line-height: 1;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e8e8ed;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            padding-right: 50px;
+        }
+        .card-summary {
+            font-size: 13.5px;
+            color: #a0a0b0;
+            line-height: 1.75;
+            margin-bottom: 14px;
+        }
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #aaa;
+        }
+        .card-source {
+            background: #1e1e2a;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            color: #6a6a80;
+        }
+        .card-arrow {
+            color: #6a6a80;
+            font-size: 14px;
+        }
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.35);
+            padding: 36px 0;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🥕</div>
+            <h1>AI'm OK-2026-04-08</h1>
+            <div class="subtitle">每日AI行业资讯精选 | 国内外多源聚合 | 用最少的时间掌握最新动态</div>
+            <div class="stats">
+                <span class="stat">16 条精选</span>
+                <span class="stat">🌐 9 条国际</span>
+                <span class="stat">🇨🇳 7 条国内</span>
+                <span class="stat">6 个来源</span>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <a class="card" href="https://z.ai/blog/glm-5.1" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-policy">安全</span></div>
+                <div class="card-title">GLM-5.1：面向长时序任务</div>
+                <div class="card-summary">HN评分515，评论212，来源Hacker News国际版</div>
+                <div class="card-meta">
+                    <span class="card-source">Hacker News</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://rajnandan.com/posts/taste-in-the-age-of-ai-and-llms/" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-policy">安全</span></div>
+                <div class="card-title">人工智能与大语言模型时代中的品味</div>
+                <div class="card-summary">该文章在Hacker News上获得241分，194条评论，探讨了人工智能和大语言模型时代下人类品味的变化，分析了技术发展对文化消费和审美标准的影响</div>
+                <div class="card-meta">
+                    <span class="card-source">Hacker News</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.wired.com/story/cusor-launches-coding-agent-openai-anthropic/" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title">Cursor推出全新AI代理体验 直接挑战Claude Code和Codex</div>
+                <div class="card-summary">随着Cursor推出新一代产品，这家AI编码初创公司如今必须更直接地与OpenAI和Anthropic竞争。</div>
+                <div class="card-meta">
+                    <span class="card-source">Wired</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://venturebeat.com/technology/salesforce-rolls-out-new-slackbot-ai-agent-as-it-battles-microsoft-and" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">产品</span><span class="tag tag-llm">Agent</span></div>
+                <div class="card-title">Salesforce推出全新Slackbot AI代理 加强职场AI领域竞争</div>
+                <div class="card-summary">Salesforce周二推出全新Slackbot，将其升级为AI驱动的职场助手，具备企业搜索等功能，旨在与微软、谷歌竞争职场AI市场。</div>
+                <div class="card-meta">
+                    <span class="card-source">VentureBeat</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://venturebeat.com/technology/anthropic-launches-cowork-a-claude-desktop-agent-that-works-in-your-files-no" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-llm">Agent</span></div>
+                <div class="card-title">Anthropic推出Cowork：Claude桌面代理无需编码即可操作文件</div>
+                <div class="card-summary">Anthropic周一发布Cowork，该AI代理功能将Claude Code工具扩展至非技术人员，据内部人士透露，团队仅用约一周时间便完成开发</div>
+                <div class="card-meta">
+                    <span class="card-source">VentureBeat</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.qbitai.com/2026/04/397898.html" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-open">开源</span><span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title">开源模型首超Opus4.6！智谱GLM-5.1登场，14小时后CUDA专家被冲了</div>
+                <div class="card-summary">八小时内成功构建了一个Linux系统，展示了智谱GLM-5.1模型的高效开发能力</div>
+                <div class="card-meta">
+                    <span class="card-source">量子位</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.qbitai.com/2026/04/397761.html" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span></div>
+                <div class="card-title">DeepSeek深夜更新自曝：V4版本将发布？</div>
+                <div class="card-summary">DeepSeek在深夜更新后透露，其V4版本即将发布，引发行业关注。</div>
+                <div class="card-meta">
+                    <span class="card-source">量子位</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.qbitai.com/2026/04/397710.html" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span></div>
+                <div class="card-title">Claude Mythos正式发布！性能超越Opus 4.6，因过于危险遭「限制」</div>
+                <div class="card-summary">人工智能模型Claude Mythos正式发布，其性能显著优于此前的Opus 4.6版本。由于该模型展现出潜在风险，目前被采取限制措施以防止滥用。</div>
+                <div class="card-meta">
+                    <span class="card-source">量子位</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.wired.com/story/anthropic-mythos-preview-project-glasswing/" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-policy">安全</span></div>
+                <div class="card-title">Anthropic联合苹果谷歌等45方测试AI网络安全新模型</div>
+                <div class="card-summary">Anthropic发起的Project Glasswing项目联合苹果、谷歌等45个组织，将使用Claude Mythos Preview模型测试AI网络安全能力。</div>
+                <div class="card-meta">
+                    <span class="card-source">Wired</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.wired.com/story/security-news-this-week-hackers-are-posting-the-claude-code-leak-with-bonus-malware/" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-research">研究</span></div>
+                <div class="card-title">黑客发布Claude代码泄露并附带恶意软件</div>
+                <div class="card-summary">FBI称近期对其监听工具的黑客攻击构成国家安全风险，攻击者窃取了思科源代码，作为持续供应链攻击的一部分，还有更多相关事件</div>
+                <div class="card-meta">
+                    <span class="card-source">Wired</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.ithome.com/0/937/015.htm" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-research">研究</span><span class="tag tag-product">创作</span><span class="tag tag-llm">Agent</span></div>
+                <div class="card-title">自然语言生成3D世界，智元Genie Sim 3.0仿真平台升级</div>
+                <div class="card-summary">智元Genie Sim3.0仿真平台通过自然语言生成3D环境，实现从环境构建到模型评测的全流程自动化，显著提升开发者训练验证效率，推动具身智能应用创新。</div>
+                <div class="card-meta">
+                    <span class="card-source">IT之家</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.aihub.cn/tools/video/updream/" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">产品</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title">Updream：B站推出的专业级AI视频创作平台</div>
+                <div class="card-summary">新智元报道，B站推出专业级AI视频创作平台Updream。</div>
+                <div class="card-meta">
+                    <span class="card-source">新智元</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.ithome.com/0/937/012.htm" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-other">AI</span></div>
+                <div class="card-title">小米米家智能宠物喂食器2可视版发售：500万像素摄像头，499元</div>
+                <div class="card-summary">小米米家智能宠物喂食器2可视版正式开售，配备500万像素高清摄像头及940nm红外补光，支持AI识别宠物进食状态，提供24小时实时监测，首发价499元。</div>
+                <div class="card-meta">
+                    <span class="card-source">IT之家</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.aihub.cn/go/trae" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">产品</span><span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title">TRAE编程：字节跳动AI代码助手</div>
+                <div class="card-summary">新智元报道，TRAE编程是字节跳动推出的AI代码助手。</div>
+                <div class="card-meta">
+                    <span class="card-source">新智元</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.anthropic.com/glasswing" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-policy">安全</span></div>
+                <div class="card-title">Project Glasswing：为人工智能时代保障关键软件安全</div>
+                <div class="card-summary">该项目在Hacker News获得1244分，引发599条评论，来源为Hacker News国际版，链接至Anthropic官网。</div>
+                <div class="card-meta">
+                    <span class="card-source">Hacker News</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://red.anthropic.com/2026/mythos-preview/" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-policy">安全</span></div>
+                <div class="card-title">评估Claude Mythos Preview的网络安全能力</div>
+                <div class="card-summary">HN评分282，评论41条</div>
+                <div class="card-meta">
+                    <span class="card-source">Hacker News</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+        </div>
+        <div class="footer">
+            🥕 由 AI'm OK v2.6 自动生成 | 2026-04-08 | 国内外 6 源聚合
+        </div>
+    </div>
+</body>
+</html>
