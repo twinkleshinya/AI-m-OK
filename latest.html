@@ -48,6 +48,46 @@
             font-size: 13px;
             color: rgba(255,255,255,0.7);
         }
+        /* v2.6: Tab 切换样式 */
+        .tab-bar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 28px 0 22px;
+        }
+        .tab-btn {
+            padding: 10px 32px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.6);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.85);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+        }
+        .tab-btn .tab-count {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-left: 4px;
+        }
+        .tab-panel {
+            display: none;
+        }
+        .tab-panel.active {
+            display: block;
+        }
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -58,6 +98,7 @@
             .header h1 { font-size: 1.8em; }
             .header .logo { font-size: 42px; }
             .stats { gap: 12px; }
+            .tab-btn { padding: 8px 20px; font-size: 13px; }
         }
         .card {
             background: #16161e;
@@ -161,38 +202,34 @@
             <h1>AI'm OK-2026-04-08</h1>
             <div class="subtitle">每日AI行业资讯精选 | 国内外多源聚合 | 用最少的时间掌握最新动态</div>
             <div class="stats">
-                <span class="stat">14 条精选</span>
-                <span class="stat">🌐 9 条国际</span>
-                <span class="stat">🇨🇳 5 条国内</span>
-                <span class="stat">5 个来源</span>
+                <span class="stat">17 条精选</span>
+                <span class="stat">🌐 8 条国际</span>
+                <span class="stat">🇨🇳 9 条国内</span>
+                <span class="stat">6 个来源</span>
             </div>
         </div>
-        <div class="cards-grid">
-            <a class="card" href="https://www.anthropic.com/glasswing" target="_blank" rel="noopener">
-                <span class="source-badge badge-intl">🌐</span>
-                <div class="tags"><span class="tag-emoji">🛡️</span> <span class="tag tag-product">产品</span><span class="tag tag-policy">安全</span><span class="tag tag-domestic">国产AI</span></div>
-                <div class="card-title">Project Glasswing：为AI时代关键软件保驾护航</div>
-                <div class="card-summary">该项目聚焦AI时代软件供应链安全，通过漏洞检测和威胁情报技术保障核心系统安全。其推出的自动化防护框架或将影响中国AI企业安全开发标准，推动行业建立更严谨的软件安全规范。</div>
-                <div class="card-meta">
-                    <span class="card-source">Hacker News</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
+        <!-- v2.6: Tab 切换 -->
+        <div class="tab-bar">
+            <button class="tab-btn active" onclick="switchTab('intl', this)">🌐 国际新闻 <span class="tab-count">(8)</span></button>
+            <button class="tab-btn" onclick="switchTab('domestic', this)">🇨🇳 国内新闻 <span class="tab-count">(9)</span></button>
+        </div>
+        <div id="panel-intl" class="tab-panel active">
+            <div class="cards-grid">
             <a class="card" href="https://z.ai/blog/glm-5.1" target="_blank" rel="noopener">
                 <span class="source-badge badge-intl">🌐</span>
                 <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-research">研究</span></div>
-                <div class="card-title">智谱AI发布GLM-5.1：突破长周期任务处理能力</div>
-                <div class="card-summary">智谱AI推出GLM-5.1模型，在长周期任务处理上实现重大突破，可支持多步骤推理和复杂场景建模。该技术将提升开发者处理复杂业务流程的效率，尤其在自动化、数据分析等领域具有应用潜力，为中国AI开发者提供更强大的工具支持。</div>
+                <div class="card-title">智谱AI发布GLM-5.1：突破长周期任务处理，开发者可免费试用</div>
+                <div class="card-summary">GLM-5.1在长周期任务处理能力上实现重大突破，支持更长上下文和复杂推理，适用于数据分析、多步骤决策等场景。开发者可免费试用，或推动国内AI模型在专业领域的应用深化</div>
                 <div class="card-meta">
                     <span class="card-source">Hacker News</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="https://red.anthropic.com/2026/mythos-preview/" target="_blank" rel="noopener">
+            <a class="card" href="https://rajnandan.com/posts/taste-in-the-age-of-ai-and-llms/" target="_blank" rel="noopener">
                 <span class="source-badge badge-intl">🌐</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-research">研究</span></div>
-                <div class="card-title">Anthropic发布Claude Mythos Preview：网络安全能力测评引关注</div>
-                <div class="card-summary">Hacker News对Anthropic最新AI模型Claude Mythos Preview的网络安全能力进行评估，揭示其在防御攻击方面的技术突破，为中国开发者提供AI安全领域的参考方向。</div>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-policy">安全</span><span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title">AI时代重塑人类审美：大语言模型如何改变内容创作趋势</div>
+                <div class="card-summary">Hacker News热议显示，AI和大语言模型正在重构人类对艺术、设计和内容的审美标准。这将深刻影响中国内容产业的创作逻辑，迫使开发者重新思考算法偏好与用户真实需求的平衡点。</div>
                 <div class="card-meta">
                     <span class="card-source">Hacker News</span>
                     <span class="card-arrow">→</span>
@@ -201,8 +238,8 @@
             <a class="card" href="https://www.wired.com/story/cusor-launches-coding-agent-openai-anthropic/" target="_blank" rel="noopener">
                 <span class="source-badge badge-intl">🌐</span>
                 <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-product">创作</span></div>
-                <div class="card-title">Cursor推出AI代码助手直面Claude Code和Codex竞争</div>
-                <div class="card-summary">Cursor作为AI编码初创公司推出新一代产品，直接与OpenAI和Anthropic竞争。该工具旨在提升代码生成效率，可能影响中国市场开发者工具选择，加剧AI编码领域竞争</div>
+                <div class="card-title">Cursor推出AI代码助手直指Claude与Codex，国内开发者面临新竞争</div>
+                <div class="card-summary">Cursor作为AI编码工具初创公司，推出新一代AI代理产品直接对标OpenAI和Anthropic的代码模型。该产品可能影响国内开发者工具选择，加剧AI编程领域竞争格局。</div>
                 <div class="card-meta">
                     <span class="card-source">Wired</span>
                     <span class="card-arrow">→</span>
@@ -210,9 +247,9 @@
             </a>
             <a class="card" href="https://venturebeat.com/technology/salesforce-rolls-out-new-slackbot-ai-agent-as-it-battles-microsoft-and" target="_blank" rel="noopener">
                 <span class="source-badge badge-intl">🌐</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">产品</span><span class="tag tag-llm">Agent</span></div>
-                <div class="card-title">Salesforce推出全新Slackbot AI助手，直面微软谷歌职场AI竞争</div>
-                <div class="card-summary">Salesforce将Slackbot升级为具备企业数据搜索能力的AI代理，标志着职场协作工具进入智能决策新阶段。该升级直接对标微软Teams AI和Google Workspace智能助手，将推动企业级AI助手在效率提升和场景深度整合方面展开新一轮竞争。</div>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">产品</span><span class="tag tag-llm">Agent</span><span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title">Salesforce升级Slackbot为AI代理，直面微软谷歌职场AI竞争</div>
+                <div class="card-summary">Salesforce将Slackbot升级为具备企业搜索和任务处理能力的AI代理，直接对标微软Teams和谷歌Workspace的AI功能，可能加速中国职场软件市场对AI助手的采纳，推动办公场景智能化升级。</div>
                 <div class="card-meta">
                     <span class="card-source">VentureBeat</span>
                     <span class="card-arrow">→</span>
@@ -221,8 +258,8 @@
             <a class="card" href="https://venturebeat.com/technology/anthropic-launches-cowork-a-claude-desktop-agent-that-works-in-your-files-no" target="_blank" rel="noopener">
                 <span class="source-badge badge-intl">🌐</span>
                 <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-llm">Agent</span></div>
-                <div class="card-title">Anthropic推出无代码桌面AI代理Cowork，非技术人员可用</div>
-                <div class="card-summary">Anthropic推出Claude桌面代理Cowork，无需编程即可操作文件。该工具在一周内开发完成，或将推动AI工具向非技术用户普及，对中国企业低代码转型具有参考价值。</div>
+                <div class="card-title">Anthropic推出Cowork：非技术人员可无代码操作Claude桌面代理</div>
+                <div class="card-summary">Anthropic推出Cowork，将Claude Code工具扩展至非技术用户，无需编程即可操作。据内部消息，该功能仅用一周开发完成，标志着AI工具向大众化迈进一步，可能加速非技术用户采用AI，影响开发者生态</div>
                 <div class="card-meta">
                     <span class="card-source">VentureBeat</span>
                     <span class="card-arrow">→</span>
@@ -231,48 +268,18 @@
             <a class="card" href="https://venturebeat.com/technology/the-creator-of-claude-code-just-revealed-his-workflow-and-developers-are" target="_blank" rel="noopener">
                 <span class="source-badge badge-intl">🌐</span>
                 <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">创作</span><span class="tag tag-llm">Agent</span></div>
-                <div class="card-title">Claude Code创建者公开开发秘籍，开发者社区热议</div>
-                <div class="card-summary">Anthropic首席科学家Boris Cherny在X平台详细披露Claude Code代码生成工具的开发流程，引发全球开发者对AI编程工具工作原理的深度探讨。该分享或将推动中国开发者更高效利用代码生成技术，加速AI编程工具的本土化创新。</div>
+                <div class="card-title">Claude Code创建者公开开发流程，开发者热议技术细节</div>
+                <div class="card-summary">Anthropic首席科学家Boris Cherny在X平台披露Claude Code开发方法论，引发全球开发者对AI代码生成技术的深度探讨。该分享揭示了当前最先进代码代理的训练技巧和工程实践，为中国开发者提供了优化AI编程工具的重要参考</div>
                 <div class="card-meta">
                     <span class="card-source">VentureBeat</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="https://www.qbitai.com/2026/04/397898.html" target="_blank" rel="noopener">
-                <span class="source-badge badge-domestic">🇨🇳</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-open">开源</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title">智谱GLM-5.1开源模型发布，性能首超Opus4.6</div>
-                <div class="card-summary">智谱AI推出GLM-5.1大模型，参数规模和推理速度超越Meta的Opus4.6，开源特性将加速国内开发者对超大规模模型的实验与应用，推动AI技术普惠化发展</div>
-                <div class="card-meta">
-                    <span class="card-source">量子位</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://www.qbitai.com/2026/04/397761.html" target="_blank" rel="noopener">
-                <span class="source-badge badge-domestic">🇨🇳</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-other">基础设施</span></div>
-                <div class="card-title">DeepSeek深夜更新：V4版本即将发布？</div>
-                <div class="card-summary">DeepSeek在深夜更新后透露即将发布V4版本，引发行业对新一代大模型性能升级的期待。该版本或将带来更强大的多模态能力与推理效率，可能加速国内AI算力竞争格局变化。</div>
-                <div class="card-meta">
-                    <span class="card-source">量子位</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://www.qbitai.com/2026/04/397710.html" target="_blank" rel="noopener">
-                <span class="source-badge badge-domestic">🇨🇳</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-research">研究</span></div>
-                <div class="card-title">Claude Mythos发布：性能碾压Opus 4.6，因安全风险遭限制</div>
-                <div class="card-summary">Anthropic推出新一代AI模型Claude Mythos，其推理能力超越现有旗舰模型Opus 4.6，但因存在潜在安全风险被限制开放使用。该事件凸显AI模型性能突破与安全管控之间的矛盾，或将推动行业建立更严格的安全评估标准。</div>
-                <div class="card-meta">
-                    <span class="card-source">量子位</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
             <a class="card" href="https://www.wired.com/story/anthropic-mythos-preview-project-glasswing/" target="_blank" rel="noopener">
                 <span class="source-badge badge-intl">🌐</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-policy">安全</span></div>
-                <div class="card-title">Anthropic联合苹果、谷歌等45+机构，用Claude模型测试AI安全防护</div>
-                <div class="card-summary">Anthropic联合苹果、谷歌等46家机构，利用Claude Mythos Preview模型测试AI安全防护能力。此举旨在应对AI技术被恶意利用的风险，推动行业建立更安全的AI应用标准，对全球AI安全发展具有示范意义</div>
+                <div class="tags"><span class="tag-emoji">🛡️</span> <span class="tag tag-llm">大模型</span><span class="tag tag-policy">安全</span><span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title">Anthropic联合苹果、谷歌等40+机构，共推AI安全新标准</div>
+                <div class="card-summary">Anthropic联合苹果、谷歌等46家机构启动Project Glasswing，利用Claude Mythos模型测试AI安全防护能力。该合作将推动全球AI安全标准制定，中国开发者或将面临更严格的AI安全合规要求。</div>
                 <div class="card-meta">
                     <span class="card-source">Wired</span>
                     <span class="card-arrow">→</span>
@@ -281,37 +288,124 @@
             <a class="card" href="https://www.wired.com/story/security-news-this-week-hackers-are-posting-the-claude-code-leak-with-bonus-malware/" target="_blank" rel="noopener">
                 <span class="source-badge badge-intl">🌐</span>
                 <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-research">研究</span><span class="tag tag-policy">安全</span></div>
-                <div class="card-title">Claude代码遭泄露，黑客附加恶意软件引安全危机</div>
-                <div class="card-summary">据Wired报道，黑客公开Anthropic的Claude代码并附加恶意软件，FBI称其威胁国家安全。此次事件暴露AI模型源码泄露风险，可能影响中国开发者对AI技术的信任度，警示行业需加强代码安全防护。</div>
+                <div class="card-title">Claude代码泄露附带恶意软件 FBI警示国家安全风险</div>
+                <div class="card-summary">据Wired报道，黑客泄露Anthropic的Claude代码并捆绑恶意软件，FBI称其威胁国家安全。此次事件暴露AI模型源码泄露风险，可能影响全球AI开发者安全，中国厂商需加强供应链防护。</div>
                 <div class="card-meta">
                     <span class="card-source">Wired</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="https://www.ithome.com/0/937/015.htm" target="_blank" rel="noopener">
+            </div>
+        </div>
+        <div id="panel-domestic" class="tab-panel">
+            <div class="cards-grid">
+            <a class="card" href="https://www.qbitai.com/2026/04/397922.html" target="_blank" rel="noopener">
                 <span class="source-badge badge-domestic">🇨🇳</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-research">研究</span><span class="tag tag-product">创作</span><span class="tag tag-llm">Agent</span></div>
-                <div class="card-title">智元Genie Sim 3.0升级：自然语言生成3D世界，加速具身智能研发</div>
-                <div class="card-summary">智元Genie Sim 3.0通过自然语言生成3D仿真环境，实现从场景构建到模型评测的全流程自动化，相比传统手动搭建方式效率提升显著，将推动具身智能领域研发进程，降低开发者技术门槛。</div>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-open">开源</span></div>
+                <div class="card-title">SentiPulse与人大高瓴开源交互式3D数字人框架SentiAvatar，引领行业</div>
+                <div class="card-summary">SentiPulse联合人大高瓴开源交互式3D数字人框架SentiAvatar，支持高精度交互与表情控制，降低开发门槛，推动数字人技术在虚拟助手、元宇宙等场景的落地，加速行业技术普及。</div>
+                <div class="card-meta">
+                    <span class="card-source">量子位</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.ithome.com/0/937/080.htm" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-other">基础设施</span></div>
+                <div class="card-title">阿里巴巴升级通义大模型事业部，李飞飞出任阿里云CTO</div>
+                <div class="card-summary">阿里巴巴集团通过设立技术委员会和升级通义大模型事业部加速AI布局，李飞飞（斯坦福教授）出任阿里云CTO将强化AI云基础设施建设，此举或推动国内大模型研发与产业应用的深度结合。</div>
                 <div class="card-meta">
                     <span class="card-source">IT之家</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="https://www.ithome.com/0/937/012.htm" target="_blank" rel="noopener">
+            <a class="card" href="https://www.ithome.com/0/937/069.htm" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-research">研究</span></div>
+                <div class="card-title">中国电信与阿里云共建粤港澳首个国产万卡智算集群</div>
+                <div class="card-summary">中国电信与阿里云在韶关上线基于‘真武’芯片的万卡智算集群，网络时延低至4微秒，峰值利用率超95%，可稳定承载千亿参数级大模型训练与推理，标志着国产算力基础设施在大模型领域实现关键突破。</div>
+                <div class="card-meta">
+                    <span class="card-source">IT之家</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.aihub.cn/tools/hr/deephire/" target="_blank" rel="noopener">
                 <span class="source-badge badge-domestic">🇨🇳</span>
                 <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">产品</span></div>
-                <div class="card-title">小米发布智能宠物喂食器2可视版：AI识别+500万像素摄像头</div>
-                <div class="card-summary">小米推出搭载AI识别功能的智能宠物喂食器，支持500万像素摄像头与24小时监测，首发价499元。该产品通过AI技术实现宠物进食行为识别，或将推动AI能力在宠物智能硬件领域的进一步渗透。</div>
+                <div class="card-title">BOSS直聘推出AI招聘工具DeepHire：重塑人岗匹配效率</div>
+                <div class="card-summary">BOSS直聘推出AI招聘工具DeepHire，通过智能算法优化人岗匹配，提升招聘效率30%。该工具利用深度学习分析岗位需求与求职者简历，精准推送候选人，降低企业用人成本，推动AI技术在人力资源领域的深度应用。</div>
+                <div class="card-meta">
+                    <span class="card-source">新智元</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.aihub.cn/tools/video/nadou-pro/" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">产品</span><span class="tag tag-product">创作</span><span class="tag tag-llm">Agent</span></div>
+                <div class="card-title">爱奇艺推出纳逗Pro：专业影视制作AI工具上线</div>
+                <div class="card-summary">爱奇艺推出专业影视制作AI工具纳逗Pro，支持自动化剪辑与特效生成，降低内容制作门槛。该工具或将改变影视行业生产流程，提升制作效率，对中小制作团队影响显著</div>
+                <div class="card-meta">
+                    <span class="card-source">新智元</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.qbitai.com/2026/04/397898.html" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🚀</span> <span class="tag tag-llm">大模型</span><span class="tag tag-open">开源</span><span class="tag tag-product">产品</span></div>
+                <div class="card-title">智谱GLM-5.1模型性能超越Opus4.6，技术突破引热议</div>
+                <div class="card-summary">智谱AI发布GLM-5.1开源模型，性能首超Meta的Opus4.6，14小时内引发CUDA专家讨论热潮。该突破标志着大模型在参数规模和推理效率上的新高度，或将加速国内开源生态的技术迭代与应用创新。</div>
+                <div class="card-meta">
+                    <span class="card-source">量子位</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.qbitai.com/2026/04/397761.html" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span></div>
+                <div class="card-title">DeepSeek深夜更新引猜测：V4版本即将发布？</div>
+                <div class="card-summary">DeepSeek在深夜更新后透露V4版本即将发布，引发行业对新一代大模型性能提升的期待。此次更新可能推动AI技术在多个应用场景的深化，加剧大模型领域的竞争</div>
+                <div class="card-meta">
+                    <span class="card-source">量子位</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.ithome.com/0/937/050.htm" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title">日本放宽数据使用规则，欲成AI开发热土</div>
+                <div class="card-summary">日本修订《个人信息保护法》，允许低风险数据无需用户同意即可用于统计分析和科研。此举旨在降低AI开发门槛，可能吸引更多国际企业布局日本市场，同时影响中国开发者跨境数据合规策略。</div>
                 <div class="card-meta">
                     <span class="card-source">IT之家</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
+            <a class="card" href="https://www.aihub.cn/go/trae" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🇨🇳</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">产品</span><span class="tag tag-product">创作</span><span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title">字节跳动推出AI代码助手TRAE编程</div>
+                <div class="card-summary">字节跳动推出AI代码助手TRAE编程，可智能生成代码片段并优化逻辑结构。该产品支持多语言实时协作，相比GitHub Copilot在代码上下文理解准确率提升27%，或将重构国内开发者工具生态。</div>
+                <div class="card-meta">
+                    <span class="card-source">新智元</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            </div>
         </div>
         <div class="footer">
-            🥕 由 AI'm OK v2.5 自动生成 | 2026-04-08 | 国内外 5 源聚合
+            🥕 由 AI'm OK v2.6 自动生成 | 2026-04-08 | 国内外 6 源聚合
         </div>
     </div>
+    <script>
+        function switchTab(type, btn) {
+            document.querySelectorAll('.tab-panel').forEach(function(p) {
+                p.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(function(b) {
+                b.classList.remove('active');
+            });
+            document.getElementById('panel-' + type).classList.add('active');
+            btn.classList.add('active');
+        }
+    </script>
 </body>
 </html>
