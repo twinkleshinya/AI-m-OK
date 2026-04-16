@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI'm OK-2026-04-16</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                         "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            padding: 24px 16px;
+        }
+        .container { max-width: 960px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            padding: 48px 0 36px;
+            color: white;
+        }
+        .header .logo { font-size: 56px; margin-bottom: 8px; }
+        .header h1 {
+            font-size: 2.6em;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+        }
+        .header .subtitle {
+            font-size: 1.05em;
+            opacity: 0.9;
+            margin-top: 10px;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .tab-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.6);
+            padding: 12px 32px;
+            border-radius: 28px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            outline: none;
+        }
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.85);
+            border-color: rgba(255,255,255,0.2);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 18px rgba(102, 126, 234, 0.4);
+        }
+        .tab-count {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-left: 6px;
+        }
+        .tab-btn.active .tab-count {
+            background: rgba(255,255,255,0.25);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+        @media (max-width: 640px) {
+            .cards-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.8em; }
+            .header .logo { font-size: 42px; }
+            .stats { gap: 12px; }
+            .tabs { gap: 10px; }
+            .tab-btn { padding: 10px 24px; font-size: 14px; }
+        }
+        .card {
+            background: #16161e;
+            border-radius: 20px;
+            padding: 22px 24px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 1px solid rgba(255,255,255,0.06);
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+            border-color: rgba(255,255,255,0.12);
+        }
+        .source-badge {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        .badge-intl {
+            background: rgba(26, 115, 232, 0.15);
+            color: #4a9eff;
+        }
+        .badge-domestic {
+            background: rgba(255, 107, 107, 0.15);
+            color: #ff6b6b;
+        }
+        .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; align-items: center; }
+        .tag {
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .tag-llm { background: #e8f0fe; color: #1a73e8; }
+        .tag-biz { background: #fce8e6; color: #d93025; }
+        .tag-open { background: #e6f4ea; color: #137333; }
+        .tag-policy { background: #e8f0fe; color: #1a73e8; }
+        .tag-product { background: #f3e8fd; color: #7c3aed; }
+        .tag-research { background: #e0f7fa; color: #00838f; }
+        .tag-other { background: #f5f5f5; color: #666666; }
+        .tag-domestic { background: #ffe8e8; color: #d93025; }
+        .tag-emoji {
+            font-size: 16px;
+            line-height: 1;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e8e8ed;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            padding-right: 50px;
+        }
+        .card-summary {
+            font-size: 13.5px;
+            color: #a0a0b0;
+            line-height: 1.75;
+            margin-bottom: 14px;
+        }
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #aaa;
+        }
+        .card-source {
+            background: #1e1e2a;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            color: #6a6a80;
+        }
+        .card-arrow {
+            color: #6a6a80;
+            font-size: 14px;
+        }
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.35);
+            padding: 36px 0;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🥕</div>
+            <h1>AI'm OK-2026-04-16</h1>
+            <div class="subtitle">每日AI行业资讯精选 | 国内外多源聚合 | 用最少的时间掌握最新动态</div>
+            <div class="stats">
+                <span class="stat">11 条精选</span>
+                <span class="stat">🌐 5 条国际</span>
+                <span class="stat">🏮 6 条国内</span>
+                <span class="stat">4 个来源</span>
+            </div>
+        </div>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('intl', this)">🌐国际资讯<span class="tab-count">5</span></button>
+            <button class="tab-btn" onclick="switchTab('domestic', this)">🏮国内资讯<span class="tab-count">6</span></button>
+        </div>
+        <div id="tab-intl" class="tab-content active">
+            <div class="cards-grid">
+            <a class="card" href="https://techcrunch.com/2026/04/15/openai-updates-its-agents-sdk-to-help-enterprises-build-safer-more-capable-agents/" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-policy">安全</span></div>
+                <div class="card-title">OpenAI升级代理开发工具包 提供企业级安全功能</div>
+                <div class="card-summary">OpenAI最新版Agents SDK新增沙盒环境和分布内工具，允许企业在隔离环境中安全运行AI代理，通过限制文件访问和操作范围保障系统安全，该更新将提升企业构建自动化助手的可靠性。</div>
+                <div class="card-meta">
+                    <span class="card-source">TechCrunch</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://replicate.com/blog/how-to-prompt-seedream-5" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🎧</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">产品</span><span class="tag tag-product">创作</span><span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title">字节跳动Seedream 5.0发布：多步骤推理提升图像生成质量</div>
+                <div class="card-summary">字节跳动Seedream 5.0引入多步骤推理和深度领域知识，能根据胶片类型、镜头参数生成高度写实的图像。测试显示其细节表现力媲美专业摄影，支持通过示例编辑实现复杂视觉效果。</div>
+                <div class="card-meta">
+                    <span class="card-source">Audio/Music/Game AI</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://techcrunch.com/2026/04/14/google-adds-ai-skills-to-chrome-to-help-you-save-favorite-workflows/" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span></div>
+                <div class="card-title">Google为Chrome浏览器新增AI技能功能：可保存复用提示词</div>
+                <div class="card-summary">Google宣布在Chrome浏览器集成Gemini AI后，新增名为Skills的功能，允许用户保存常用AI提示词并跨网页复用。该功能通过简化重复性操作，提升AI辅助工作效率，属于浏览器AI能力的重要扩展。</div>
+                <div class="card-meta">
+                    <span class="card-source">TechCrunch</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://developer.nvidia.com/blog/nvidia-ising-introduces-ai-powered-workflows-to-build-fault-tolerant-quantum-systems/" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🎧</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-open">开源</span></div>
+                <div class="card-title">NVIDIA推出量子系统AI工具包 Ising模型性能超三大巨头</div>
+                <div class="card-summary">NVIDIA发布开源AI模型家族Ising，包含量子校准和纠错两大领域。其35B参数的Ising Calibration模型在量子校准基准测试中超越Gemini 3.1 Pro、Claude Opus 4.6和GPT 5.4，3D CNN纠错框架实现低延迟解码，为量子计算系统构建提供全新解决方案。</div>
+                <div class="card-meta">
+                    <span class="card-source">Audio/Music/Game AI</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://replicate.com/blog/seedance-2" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🎧</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">音频AI</span><span class="tag tag-research">研究</span></div>
+                <div class="card-title">Seedance 2.0视频生成技术突破：打造电影级AI视频</div>
+                <div class="card-summary">Replicate博客显示，Seedance 2.0在提示遵循、音频集成和消除AI视觉特征方面取得重大进展，可生成媲美电影的高质量AI视频，如太空站碰撞等复杂场景。</div>
+                <div class="card-meta">
+                    <span class="card-source">Audio/Music/Game AI</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            </div>
+        </div>
+        <div id="tab-domestic" class="tab-content">
+            <div class="cards-grid">
+            <a class="card" href="http://www.bilibili.com/video/av116293000764087" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📺</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title">B站教程详解Coze开发，涵盖AI训练与部署全流程</div>
+                <div class="card-summary">本教程系统讲解Python入门、Transformer架构、SFT/RLHF训练、RAG/Agent开发及大模型私有化部署，适合零基础至进阶开发者学习AI全流程开发技术。</div>
+                <div class="card-meta">
+                    <span class="card-source">B站</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="http://www.bilibili.com/video/av116283588746657" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📺</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">音频AI</span><span class="tag tag-product">产品</span></div>
+                <div class="card-title">可灵AI3.0新功能曝光：多镜头创作+角色一致性，B站最全教程来袭</div>
+                <div class="card-summary">B站发布可灵AI3.0保姆级教程，涵盖多镜头创作、文字渲染提升及角色一致性功能，支持零基础制作AI短剧。教程整合工具与资料包，助力用户7天掌握AI视频全流程，挑战Sora等竞品。</div>
+                <div class="card-meta">
+                    <span class="card-source">B站</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="http://www.bilibili.com/video/av116328887225403" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📺</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-product">产品</span></div>
+                <div class="card-title">B站发布Cursor AI编程教程：零基础搭建高效工作流</div>
+                <div class="card-summary">B站上线最新Cursor AI编程教程，提供全套文档课件与学习路线图，手把手教学高效工作流搭建，全程干货且效果优于付费课程，助力开发者提升编程效率。</div>
+                <div class="card-meta">
+                    <span class="card-source">B站</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.aihub.cn/tools/design/zawa/" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🏮</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">产品</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title">美图推出品牌创意AI工具Zawa，一键生成Logo海报社媒内容</div>
+                <div class="card-summary">美图推出AI创意助手Zawa，可一键生成品牌Logo、海报及社交媒体内容，提升设计效率。该工具整合AI生成能力，适用于企业品牌建设与营销场景。</div>
+                <div class="card-meta">
+                    <span class="card-source">新智元</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.aihub.cn/tools/cutrix/" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🏮</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">音频AI</span><span class="tag tag-product">产品</span></div>
+                <div class="card-title">AI视频翻译平台Cutrix助力内容出海</div>
+                <div class="card-summary">Cutrix推出AI视频翻译与配音平台，通过自动化技术实现多语言视频内容处理，降低全球化传播门槛，提升效率。</div>
+                <div class="card-meta">
+                    <span class="card-source">新智元</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://www.aihub.cn/tools/design/haimeta/" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🏮</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">产品</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title">一站式AI创作平台Haimeta上线，集成多模态生成工具</div>
+                <div class="card-summary">Haimeta推出集成图像、视频、3D生成及AI特效的创作平台，支持电商、社交媒体等场景的自动化内容生产，提供多模型协同工作流与创意展示空间，降低创作门槛。</div>
+                <div class="card-meta">
+                    <span class="card-source">新智元</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            </div>
+        </div>
+        <div class="footer">
+            🥕 由 AI'm OK v3.2 自动生成 | 2026-04-16 | 国内外 4 源聚合
+        </div>
+    </div>
+    <script>
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.tab-content').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            document.getElementById('tab-' + tab).classList.add('active');
+            btn.classList.add('active');
+        }
+    </script>
+</body>
+</html>
