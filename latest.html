@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="aimok-generated-at" content="2026-04-23 16:37:42 +0800">
-    <title>AI'm OK-2026-04-23</title>
+    <title>AI'm OK-2026-04-24</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -81,6 +77,10 @@
             color: white;
             border-color: transparent;
             box-shadow: 0 4px 18px rgba(102, 126, 234, 0.4);
+        }
+        .tab-btn.special.active {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            box-shadow: 0 4px 18px rgba(245, 158, 11, 0.35);
         }
         .tab-count {
             display: inline-block;
@@ -205,92 +205,122 @@
             padding: 36px 0;
             font-size: 13px;
         }
-        .build-info {
-            margin-top: 10px;
-            font-size: 12px;
-            color: rgba(255,255,255,0.45);
-            letter-spacing: 0.2px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div class="logo">🥕</div>
-            <h1>AI'm OK-2026-04-23</h1>
+            <h1>AI'm OK-2026-04-24</h1>
             <div class="subtitle">每日AI行业资讯精选 | 国内外多源聚合 | 用最少的时间掌握最新动态</div>
             <div class="stats">
-                <span class="stat">5 条精选</span>
-                <span class="stat">🌐 2 条国际</span>
-                <span class="stat">🏮 3 条国内</span>
-                <span class="stat">4 个来源</span>
+                <span class="stat">4 条精选</span>
+                <span class="stat">🌐 0 条国际</span>
+                <span class="stat">🏮 4 条国内</span>
+                <span class="stat">✨ 4 条AI专项</span>
+                <span class="stat">3 个来源</span>
             </div>
         </div>
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('intl', this)">🌐国际资讯<span class="tab-count">2</span></button>
-            <button class="tab-btn" onclick="switchTab('domestic', this)">🏮国内资讯<span class="tab-count">3</span></button>
+            <button class="tab-btn active" onclick="switchTab('intl', this)">🌐国际资讯<span class="tab-count">0</span></button>
+            <button class="tab-btn" onclick="switchTab('domestic', this)">🏮国内资讯<span class="tab-count">4</span></button>
+            <button class="tab-btn special" onclick="switchTab('special', this)">✨AI专项<span class="tab-count">4</span></button>
         </div>
         <div id="tab-intl" class="tab-content active">
             <div class="cards-grid">
-            <a class="card" href="https://techcrunch.com/2026/04/22/google-makes-an-interesting-choice-with-its-new-agent-building-tool-for-enterprises/" target="_blank" rel="noopener">
-                <span class="source-badge badge-intl">🌐</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>Google推出企业级代理平台：专注IT技术团队</strong></div>
-                <div class="card-summary">Google在云大会上发布Gemini Enterprise Agent Platform，该平台专为IT和开发团队设计，与Amazon Bedrock AgentCore及Microsoft Foundry形成竞争。此举凸显AI代理技术在企业场景中的安全性和技术成熟度挑战。</div>
-                <div class="card-meta">
-                    <span class="card-source">TechCrunch</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://openai.com/index/introducing-workspace-agents-in-chatgpt/" target="_blank" rel="noopener">
-                <span class="source-badge badge-intl">🌐</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>ChatGPT推出Workspace Agents功能引发热议</strong></div>
-                <div class="card-summary">OpenAI在Hacker News发布ChatGPT新功能Workspace Agents，该功能上线后迅速获得132分讨论热度，50条评论反映开发者对其工作流整合能力高度关注，标志着AI代理技术在生产力工具领域的关键进展</div>
-                <div class="card-meta">
-                    <span class="card-source">Hacker News</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
+
             </div>
         </div>
         <div id="tab-domestic" class="tab-content">
             <div class="cards-grid">
-            <a class="card" href="http://www.bilibili.com/video/av116431228246838" target="_blank" rel="noopener">
+            <a class="card" href="https://www.qbitai.com/2026/04/406359.html" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🏮</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-open">开源</span></div>
+                <div class="card-title"><strong>DeepSeek V4发布：打破闭源垄断，携手华为算力</strong></div>
+                <div class="card-summary">DeepSeek V4正式上线并开源，实现Agent能力、世界知识和推理性能国内与开源领域领先。通过创新注意力机制实现百万上下文标配，技术细节显示其对计算和显存需求大幅降低，同时明确下半年将批量采用华为算力。</div>
+                <div class="card-meta">
+                    <span class="card-source">量子位</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="http://www.bilibili.com/video/av116449934838787" target="_blank" rel="noopener">
                 <span class="source-badge badge-domestic">📺</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">创作</span></div>
-                <div class="card-title"><strong>零基础AI漫剧制作教程：Coze工作流保姆级搭建指南</strong></div>
-                <div class="card-summary">B站教程详细讲解如何使用Coze工作流从零开始制作AI漫剧和短剧视频，提供动态内容生成的完整实践路径，适合无经验用户快速上手。</div>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">产品</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title"><strong>EasyClick AI发布UI生成智能体：需求转代码，一键预览</strong></div>
+                <div class="card-summary">该工具通过AI实现从UI需求到代码的自动生成，配合EC cli实时预览功能，或将重构UI开发流程，提升设计到落地的效率。</div>
                 <div class="card-meta">
                     <span class="card-source">B站</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="https://36kr.com/p/3777870287737860?f=rss" target="_blank" rel="noopener">
-                <span class="source-badge badge-domestic">🏮</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>36氪开放三大AI垂直社群，覆盖全阶段用户需求</strong></div>
-                <div class="card-summary">36氪AI测评推出AI启航群、实战群及OPC超级个体群，针对不同阶段用户需求提供学习与应用路径，推动AI从认知到落地的全流程实践。</div>
+            <a class="card" href="https://mp.weixin.qq.com/s/jzWwJ2lEErzZmr6x6JSnGQ" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📬</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span></div>
+                <div class="card-title"><strong>Anthropic承认Claude Code性能下降源于三大技术问题</strong></div>
+                <div class="card-summary">Anthropic官方披露Claude Code近期性能下降实为三个技术Bug所致，包括推理强度调整失误、缓存机制缺陷及框架兼容性问题，强调模型能力未实际退化，已全部修复。该事件揭示了大型AI系统在优化过程中可能面临的复杂技术挑战。</div>
                 <div class="card-meta">
-                    <span class="card-source">36氪</span>
+                    <span class="card-source">微信公众号</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="https://36kr.com/p/3778121523025154?f=rss" target="_blank" rel="noopener">
-                <span class="source-badge badge-domestic">🏮</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>对话框+青蛙形象，Ribbi上线一周获4万用户申请</strong></div>
-                <div class="card-summary">Ribbi通过对话框交互和自动沉淀创作技能的创新模式，上线封测一周即获4万用户申请，验证了AI创作工具全链路管理的市场需求。其自研Contxt Layer架构实现创作流程自动化，与传统设计工具形成差异化竞争。</div>
+            <a class="card" href="http://www.bilibili.com/video/av116441009422369" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📺</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title"><strong>GitHub Codex实现Simulink全自动建模演示</strong></div>
+                <div class="card-summary">B站视频展示通过GitHub Codex实现Simulink自动建模、连线、仿真全流程，验证AI在工程建模领域的自动化潜力，为复杂系统设计提供新思路。</div>
                 <div class="card-meta">
-                    <span class="card-source">36氪</span>
+                    <span class="card-source">B站</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            </div>
+        </div>
+        <div id="tab-special" class="tab-content">
+            <div class="cards-grid">
+            <a class="card" href="https://www.qbitai.com/2026/04/406359.html" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">🏮</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-open">开源</span></div>
+                <div class="card-title"><strong>DeepSeek V4发布：打破闭源垄断，携手华为算力</strong></div>
+                <div class="card-summary">DeepSeek V4正式上线并开源，实现Agent能力、世界知识和推理性能国内与开源领域领先。通过创新注意力机制实现百万上下文标配，技术细节显示其对计算和显存需求大幅降低，同时明确下半年将批量采用华为算力。</div>
+                <div class="card-meta">
+                    <span class="card-source">量子位</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="http://www.bilibili.com/video/av116449934838787" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📺</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">产品</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title"><strong>EasyClick AI发布UI生成智能体：需求转代码，一键预览</strong></div>
+                <div class="card-summary">该工具通过AI实现从UI需求到代码的自动生成，配合EC cli实时预览功能，或将重构UI开发流程，提升设计到落地的效率。</div>
+                <div class="card-meta">
+                    <span class="card-source">B站</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://mp.weixin.qq.com/s/jzWwJ2lEErzZmr6x6JSnGQ" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📬</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span></div>
+                <div class="card-title"><strong>Anthropic承认Claude Code性能下降源于三大技术问题</strong></div>
+                <div class="card-summary">Anthropic官方披露Claude Code近期性能下降实为三个技术Bug所致，包括推理强度调整失误、缓存机制缺陷及框架兼容性问题，强调模型能力未实际退化，已全部修复。该事件揭示了大型AI系统在优化过程中可能面临的复杂技术挑战。</div>
+                <div class="card-meta">
+                    <span class="card-source">微信公众号</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="http://www.bilibili.com/video/av116441009422369" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📺</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title"><strong>GitHub Codex实现Simulink全自动建模演示</strong></div>
+                <div class="card-summary">B站视频展示通过GitHub Codex实现Simulink自动建模、连线、仿真全流程，验证AI在工程建模领域的自动化潜力，为复杂系统设计提供新思路。</div>
+                <div class="card-meta">
+                    <span class="card-source">B站</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
             </div>
         </div>
         <div class="footer">
-            🥕 由 AI'm OK v3.2 自动生成 | 2026-04-23 | 国内外 4 源聚合
-            <div class="build-info">生成时间：2026-04-23 16:37:42 +0800 | Build: 1776933462</div>
+            🥕 由 AI'm OK v3.2 自动生成 | 2026-04-24 | 国内外 3 源聚合
         </div>
     </div>
     <script>
