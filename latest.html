@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI'm OK-2026-04-25</title>
+    <title>AI'm OK-2026-04-28</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -211,124 +211,105 @@
     <div class="container">
         <div class="header">
             <div class="logo">🥕</div>
-            <h1>AI'm OK-2026-04-25</h1>
+            <h1>AI'm OK-2026-04-28</h1>
             <div class="subtitle">每日AI行业资讯精选 | 国内外多源聚合 | 用最少的时间掌握最新动态</div>
         <div class="stats">
-            <span class="stat">15 条精选</span>
-            <span class="stat">🌐 6 条国际</span>
-            <span class="stat">🏮 4 条国内</span>
-            <span class="stat">🎧 5 条AI音频</span>
-            <span class="stat">7 个来源</span>
+            <span class="stat">12 条精选</span>
+            <span class="stat">🌐 0 条国际</span>
+            <span class="stat">🏮 8 条国内</span>
+            <span class="stat">🎧 4 条AI音频</span>
+            <span class="stat">2 个来源</span>
         </div>
     </div>
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('intl', this)">🌐国际资讯<span class="tab-count">6</span></button>
-        <button class="tab-btn" onclick="switchTab('domestic', this)">🏮国内资讯<span class="tab-count">4</span></button>
-        <button class="tab-btn special" onclick="switchTab('audio', this)">🎧AI音频<span class="tab-count">5</span></button>
+        <button class="tab-btn active" onclick="switchTab('intl', this)">🌐国际资讯<span class="tab-count">0</span></button>
+        <button class="tab-btn" onclick="switchTab('domestic', this)">🏮国内资讯<span class="tab-count">8</span></button>
+        <button class="tab-btn special" onclick="switchTab('audio', this)">🎧AI音频<span class="tab-count">4</span></button>
     </div>
         <div id="tab-intl" class="tab-content active">
             <div class="cards-grid">
-            <a class="card" href="https://api-docs.deepseek.com/news/news260424" target="_blank" rel="noopener">
-                <span class="source-badge badge-intl">🌐</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-open">开源</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>DeepSeek发布V4大模型：参数规模与推理能力全面升级</strong></div>
-                <div class="card-summary">DeepSeek正式开源V4系列模型，其中V4-Pro参数量达1.6T，推理能力超越当前主流闭源模型，V4-Flash则以更小参数实现接近V4-Pro的性能，提供更优成本效益。该系列模型在代理编码、世界知识和数学推理等维度展现显著优势。</div>
-                <div class="card-meta">
-                    <span class="card-source">Hacker News</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://developer.nvidia.com/blog/mitigating-indirect-agents-md-injection-attacks-in-agentic-environments/" target="_blank" rel="noopener">
-                <span class="source-badge badge-intl">🎵</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-policy">安全</span><span class="tag tag-other">基础设施</span></div>
-                <div class="card-title"><strong>NVIDIA发现AI工具新安全漏洞：间接注入攻击威胁软件开发</strong></div>
-                <div class="card-summary">NVIDIA AI红队发现Codex工具存在间接AGENTS.md注入攻击漏洞，通过恶意依赖链实现代码注入，揭示了代理开发环境特有的供应链安全风险，凸显AI辅助开发中的新型安全挑战。</div>
-                <div class="card-meta">
-                    <span class="card-source">Audio Creator AI</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/" target="_blank" rel="noopener">
-                <span class="source-badge badge-intl">🧪</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-open">开源</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>DeepSeek发布V4模型：处理更长文本，开源引发行业关注</strong></div>
-                <div class="card-summary">DeepSeek发布新一代旗舰模型V4，支持更长文本处理并保持开源特性。该模型延续了R1模型的高效性能，其技术突破可能推动中国AI企业开放权重模型的浪潮，对行业技术发展具有参考价值。</div>
-                <div class="card-meta">
-                    <span class="card-source">AI Frontier</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://developer.nvidia.com/blog/build-with-deepseek-v4-using-nvidia-blackwell-and-gpu-accelerated-endpoints/" target="_blank" rel="noopener">
-                <span class="source-badge badge-intl">🧪</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-other">基础设施</span></div>
-                <div class="card-title"><strong>DeepSeek发布第四代模型V4-Pro与V4-Flash，支持百万级上下文处理</strong></div>
-                <div class="card-summary">DeepSeek推出第四代模型V4-Pro和V4-Flash，分别拥有1.6万亿和2840亿参数，支持百万级上下文处理，显著降低推理计算量和内存负担，推动代理AI工作流程发展</div>
-                <div class="card-meta">
-                    <span class="card-source">AI Frontier</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://techcrunch.com/2026/04/24/mac-mini-price-expensive-ebay-shortage-ai-memory/" target="_blank" rel="noopener">
-                <span class="source-badge badge-intl">🌐</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-policy">政策</span></div>
-                <div class="card-title"><strong>AI工具需求激增致Mac mini短缺，eBay高价转售成风</strong></div>
-                <div class="card-summary">苹果M4 Mac mini因AI模型运行需求激增导致缺货，eBay上出现溢价转售现象。该设备成为运行OpenClaw等本地AI工具的热门硬件，部分配置需等待6月才能发货。</div>
-                <div class="card-meta">
-                    <span class="card-source">TechCrunch</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://www.technologyreview.com/2026/04/24/1136352/health-care-ai-dont-know-actually-helps-patients/" target="_blank" rel="noopener">
-                <span class="source-badge badge-intl">🌐</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-research">研究</span></div>
-                <div class="card-title"><strong>医疗AI全面应用，但疗效仍存疑</strong></div>
-                <div class="card-summary">AI在医疗领域已广泛用于病历记录、影像分析等场景，但《自然医学》最新论文指出，目前尚无充分证据表明这些技术能真正改善患者健康结果，医疗机构在部署AI工具时普遍缺乏严谨评估。</div>
-                <div class="card-meta">
-                    <span class="card-source">MIT Tech Review</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
+
             </div>
         </div>
         <div id="tab-domestic" class="tab-content">
             <div class="cards-grid">
-            <a class="card" href="https://mp.weixin.qq.com/s/yATQ-TUhOqn98Be9EifE5A" target="_blank" rel="noopener">
+            <a class="card" href="https://mp.weixin.qq.com/s/mgHr9BOJVv883fw96_nZlA" target="_blank" rel="noopener">
                 <span class="source-badge badge-domestic">📬</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-open">开源</span></div>
-                <div class="card-title"><strong>通义千问开源Qwen3.6-27B，智能体编程性能超越前代旗舰</strong></div>
-                <div class="card-summary">阿里Qwen3.6-27B模型在四大智能体编程基准上全面超越前代397B版本，仅用1/15参数量实现性能突破。采用密集架构提升部署效率，原生支持多模态理解，开源权重已同步至Hugging Face和ModelScope，开发者可直接调用。</div>
-                <div class="card-meta">
-                    <span class="card-source">微信公众号</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://mp.weixin.qq.com/s/s1jhzL6DEY65nNSk4QIyoQ" target="_blank" rel="noopener">
-                <span class="source-badge badge-domestic">📬</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-open">开源</span></div>
-                <div class="card-title"><strong>DeepSeek V4震撼发布 开源模型性能突破闭源极限</strong></div>
-                <div class="card-summary">DeepSeek正式发布V4系列开源模型，其Pro版本在Agent编程、世界知识和逻辑推理三方面达到开源巅峰，性能对标顶级闭源模型。通过混合注意力机制等三大技术创新，实现百万级上下文处理能力，推理效率较前代提升显著。</div>
-                <div class="card-meta">
-                    <span class="card-source">微信公众号</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://mp.weixin.qq.com/s/56gzrcs6KYhN0OWqkpdd1A" target="_blank" rel="noopener">
-                <span class="source-badge badge-domestic">📬</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-open">开源</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>DeepSeek V4发布：昇腾适配，AtomGit首发</strong></div>
-                <div class="card-summary">DeepSeek V4系列模型于2026年4月24日正式发布并同步开源，适配昇腾平台，AtomGit首发上线，推动大模型技术开放应用。</div>
-                <div class="card-meta">
-                    <span class="card-source">微信公众号</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://36kr.com/p/3780910411193602?f=rss" target="_blank" rel="noopener">
-                <span class="source-badge badge-domestic">🏮</span>
                 <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>中科天塔发布激光通信终端，推动太空智驾三级跨越</strong></div>
-                <div class="card-summary">随着卫星数量激增，中科天塔推出新一代星载激光通信终端，结合AI大模型实现自主决策，解决太空交通管理难题。该技术已与头部卫星公司合作，计划年产能超500套，推动卫星管理模式从人工到AI自主的跨越。</div>
+                <div class="card-title"><strong>OpenAI发布GPT-5.5：聚焦真实办公场景效率提升</strong></div>
+                <div class="card-summary">OpenAI正式推出GPT-5.5，支持400K-1M token上下文，主打真实工作场景的效率提升。新模型在知识工作、编程、电脑操作等场景表现突出，价格仅为竞品Claude Mythos的四分之一，标志着OpenAI从‘天才模型’转向‘标准件’战略。</div>
                 <div class="card-meta">
-                    <span class="card-source">36氪</span>
+                    <span class="card-source">微信公众号</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://mp.weixin.qq.com/s/Z-hlh8VT8nMV66MX-MG1MQ" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📬</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title"><strong>OpenAI推出ChatGPT Images 2.0，设计师或将面临变革</strong></div>
+                <div class="card-summary">OpenAI全新图像生成模型ChatGPT Images 2.0全量上线，生成画面更逼真、支持更多图像类型和风格，Chris实测用其优化产品UI设计，显著提升产品质感，展现AI工具对设计行业的颠覆潜力。</div>
+                <div class="card-meta">
+                    <span class="card-source">微信公众号</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://mp.weixin.qq.com/s/HUQuPYIPK9l-saB36kdoxg" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📬</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title"><strong>DeepSeek-V4与GPT-5.5实测对决：谁更胜一筹？</strong></div>
+                <div class="card-summary">2026年4月24日，OpenAI发布GPT-5.5，同日DeepSeek推出V4系列。实测显示，V4在超长上下文处理和KV缓存效率上表现突出，但逻辑推理题测试中，GPT-5.5反应更快且准确识别题目陷阱，凸显两者在推理能力上的差异化竞争。</div>
+                <div class="card-meta">
+                    <span class="card-source">微信公众号</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://mp.weixin.qq.com/s/wdHCvUAAJtt3iPMoIlqlfg" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📬</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">产品</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title"><strong>国内首个Image 2平替平台星流上线，解决AI设计落地难题</strong></div>
+                <div class="card-summary">星流平台接入Lovart Image 2模型，通过文字编辑、精准重绘等功能实现包装改字、电商换装等场景的无损操作，降低AI设计落地门槛。该平台被业界称为Lovart中文版，提供国内直连的流畅体验。</div>
+                <div class="card-meta">
+                    <span class="card-source">微信公众号</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://mp.weixin.qq.com/s/BBHjDV9kMgOMZ-QMf3e56w" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📬</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title"><strong>匿名模型Ling 2.6 Flash实测：批量任务响应快17分钟，成本仅GPT-5.4-mini的1/10</strong></div>
+                <div class="card-summary">实测百灵Ling 2.6 Flash在处理2000篇FTC新闻时，每篇比GPT-5.4-mini快0.53秒，总耗时减少17分钟，且拒绝编造缺失字段，成本仅为竞品的十分之一，展现批量处理场景的稳定性优势。</div>
+                <div class="card-meta">
+                    <span class="card-source">微信公众号</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="http://www.bilibili.com/video/av116457853689164" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📺</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-open">开源</span><span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title"><strong>阿里Qoder+微软Playwright CLI：浏览器自动化省Token新方案</strong></div>
+                <div class="card-summary">通过阿里Qoder与微软Playwright CLI结合，利用语义快照替代CSS选择器，实现浏览器自动化操作零Token消耗。该方案可沉淀为永久免费的Skill，显著降低AI执行重复任务的成本。</div>
+                <div class="card-meta">
+                    <span class="card-source">B站</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://mp.weixin.qq.com/s/n_51h6b2rlO5JKMqS-T9dA" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📬</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">产品</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title"><strong>Claude上线交互式图表功能，三巨头同日押注AI可视化</strong></div>
+                <div class="card-summary">Anthropic宣布Claude可生成可点击的交互式图表和流程图，用户点击元素即可展开详情。OpenAI和Google此前已推出类似功能，显示AI可视化能力成为行业竞争焦点。该功能基于HTML/SVG技术，支持Web端和桌面端，免费用户可直接使用。</div>
+                <div class="card-meta">
+                    <span class="card-source">微信公众号</span>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a class="card" href="https://mp.weixin.qq.com/s/77dyufF3MP8stHPS0BApNw" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📬</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">产品</span><span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title"><strong>Harness Engineering工程化落地：从理念到实战的12步拆解</strong></div>
+                <div class="card-summary">本文以JK Launcher项目为案例，系统拆解Harness Engineering从0到1的搭建全流程，明确Rule、Skill、Workflow等核心概念的工程角色，为AI开发提供可复用的工程化方法论。</div>
+                <div class="card-meta">
+                    <span class="card-source">微信公众号</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
@@ -336,51 +317,41 @@
         </div>
     <div id="tab-audio" class="tab-content">
         <div class="cards-grid">
-            <a class="card" href="https://techcrunch.com/2026/04/24/nothing-introduces-an-ai-powered-dictation-tool/" target="_blank" rel="noopener">
-                <span class="source-badge badge-intl">🌐</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">音频AI</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>Nothing推出AI语音转文字工具Essential Voice</strong></div>
-                <div class="card-summary">Nothing推出AI语音转文字工具Essential Voice，支持100+语言，可自动去除语气词并创建自定义语音快捷短语。该工具已上线Phone(3)设备，后续将扩展至Phone(4a)系列，通过语音输入实现比键盘输入快4倍的效率。</div>
-                <div class="card-meta">
-                    <span class="card-source">TechCrunch</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://mp.weixin.qq.com/s/66ZtKMx7OsxcTps9aBELCA" target="_blank" rel="noopener">
+            <a class="card" href="https://mp.weixin.qq.com/s/G22ey4_8-Onow5rPFIBDLg" target="_blank" rel="noopener">
                 <span class="source-badge badge-domestic">📬</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">音频AI</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>VibeVoice TTS框架发布：突破多说话者语音生成难题</strong></div>
-                <div class="card-summary">VibeVoice框架通过解决传统TTS系统在可扩展性、说话者一致性及自然对话转换方面的技术瓶颈，实现了长篇多说话者对话音频的高质量生成，为播客等内容创作提供新工具。教程因官方限制需通过公众号获取。</div>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">音频AI</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title"><strong>ACE Studio 2.0 新增 AI 配乐配音效，影视后期迈入新阶段</strong></div>
+                <div class="card-summary">ACE Studio 2.0 新增 Video Composer 功能，支持 AI 自动生成视频配乐与音效，可优化影视后期工作流。该功能目前处于 Beta 测试阶段，AI 配乐效率突出但音效需人工微调，为创作者提供灵感辅助与商单处理工具。</div>
                 <div class="card-meta">
                     <span class="card-source">微信公众号</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="https://mp.weixin.qq.com/s/p2w6V5RSXJJbDs_8E502Ww" target="_blank" rel="noopener">
+            <a class="card" href="https://mp.weixin.qq.com/s/4TfXl9d0ohiCyBfdVpRB8w" target="_blank" rel="noopener">
                 <span class="source-badge badge-domestic">📬</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">音频AI</span><span class="tag tag-product">产品</span><span class="tag tag-domestic">国产AI</span></div>
-                <div class="card-title"><strong>国产语音模型推理速度提升400%，成本下降80%</strong></div>
-                <div class="card-summary">阶跃星辰发布新一代语音识别模型StepAudio 2.5 ASR，推理速度提升400%、时延降低60%、成本下降80%，支持长音频一次性转写，定价降至0.15元/小时，但实际测试中对部分音频输入适应性存在差异。</div>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">产品</span><span class="tag tag-product">创作</span><span class="tag tag-domestic">国产AI</span></div>
+                <div class="card-title"><strong>阿里推出HappyHorse 1.0：千问APP免费体验AI视频生成</strong></div>
+                <div class="card-summary">阿里ATH事业群推出的HappyHorse 1.0视频生成模型已在通义APP开放免费体验，支持1080P分辨率及多宽高比选择。该模型通过自然镜头调度和精准风格还原，在AI视频生成领域展现显著优势，实测表现优于同类产品。</div>
                 <div class="card-meta">
                     <span class="card-source">微信公众号</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="https://mp.weixin.qq.com/s/yBgZVzS28-WnG2KzQYAR0w" target="_blank" rel="noopener">
+            <a class="card" href="https://mp.weixin.qq.com/s/mIvALhN8VU5rhhl63-tcMg" target="_blank" rel="noopener">
                 <span class="source-badge badge-domestic">📬</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">音频AI</span><span class="tag tag-open">开源</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>港科大联合腾讯发布Audio-Omni：首个统一音频理解生成编辑模型</strong></div>
-                <div class="card-summary">香港科技大学联合腾讯微信视觉团队与北京大学提出Audio-Omni，这是首个在统一框架下支持通用声音、音乐、语音三大领域理解、生成与编辑的多模态模型，已开源并被SIGGRAPH 2026接收。</div>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">产品</span></div>
+                <div class="card-title"><strong>全球首个AI音乐社区上线：音述AI助力无乐理创作</strong></div>
+                <div class="card-summary">音述AI推出免费在线AI写歌平台，主打中文音乐创作，无需乐理基础即可参与共创，降低音乐创作门槛。</div>
                 <div class="card-meta">
                     <span class="card-source">微信公众号</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="https://mp.weixin.qq.com/s/QNq64rZaqZG04lUP7wT50g" target="_blank" rel="noopener">
+            <a class="card" href="https://mp.weixin.qq.com/s/JWFmKY9FBs3tItSptgOF-w" target="_blank" rel="noopener">
                 <span class="source-badge badge-domestic">📬</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">音频AI</span><span class="tag tag-research">研究</span></div>
-                <div class="card-title"><strong>2026下半年AI音乐四大趋势：空间音频、实时交互、人机协同、版权规范落地</strong></div>
-                <div class="card-summary">2026下半年AI音乐将突破音质局限，实现空间音频与实时交互，人机协同成为标准工作流，版权规范全面落地，推动行业从‘好不好听’转向‘身在何处’的沉浸式体验革命。</div>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">音频AI</span><span class="tag tag-product">产品</span><span class="tag tag-research">研究</span></div>
+                <div class="card-title"><strong>华南理工MAGIC-TTS：全球首个实现token级时长与停顿控制的零样本语音合成模型</strong></div>
+                <div class="card-summary">华南理工大学团队发布MAGIC-TTS，全球首个实现token级时长与停顿精确控制的零样本语音合成模型，突破传统TTS无法局部调节节奏的限制，为导航、有声书等场景提供精准语音生成方案。</div>
                 <div class="card-meta">
                     <span class="card-source">微信公众号</span>
                     <span class="card-arrow">→</span>
@@ -389,7 +360,7 @@
         </div>
         </div>
         <div class="footer">
-            🥕 由 AI'm OK v3.2 自动生成 | 2026-04-25 | 国内外 7 源聚合
+            🥕 由 AI'm OK v3.2 自动生成 | 2026-04-28 | 国内外 2 源聚合
         </div>
     </div>
     <script>
