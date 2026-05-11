@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI'm OK-2026-05-08</title>
+    <title>AI'm OK-2026-05-11</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -13,7 +13,25 @@
             min-height: 100vh;
             padding: 24px 16px;
         }
-        .container { max-width: 960px; margin: 0 auto; }
+        .container { max-width: 960px; margin: 0 auto; position: relative; }
+        .history-entry {
+            position: absolute;
+            top: 18px;
+            right: 0;
+            background: transparent;
+            border: 0;
+            color: rgba(255,255,255,0.52);
+            font-size: 13px;
+            cursor: pointer;
+            padding: 4px 0;
+            letter-spacing: 0.3px;
+        }
+        .history-entry:hover,
+        .history-entry.active {
+            color: #73e2d4;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
         .header {
             text-align: center;
             padding: 48px 0 36px;
@@ -49,10 +67,14 @@
             color: rgba(255,255,255,0.7);
         }
         .tabs {
+            position: relative;
+            margin-bottom: 28px;
+            min-height: 50px;
+        }
+        .main-tabs {
             display: flex;
             justify-content: center;
             gap: 16px;
-            margin-bottom: 28px;
         }
         .tab-btn {
             background: rgba(255,255,255,0.08);
@@ -104,12 +126,20 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 18px;
         }
+        .cards-grid > .card:only-child {
+            grid-column: 1 / -1;
+            width: 100%;
+            max-width: 520px;
+            justify-self: center;
+        }
         @media (max-width: 640px) {
             .cards-grid { grid-template-columns: 1fr; }
             .header h1 { font-size: 1.8em; }
             .header .logo { font-size: 42px; }
             .stats { gap: 12px; }
-            .tabs { gap: 10px; }
+            .tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .main-tabs { flex-wrap: wrap; gap: 10px; }
+            .history-entry { top: 8px; right: 2px; font-size: 12px; }
             .tab-btn { padding: 10px 24px; font-size: 14px; }
         }
         .card {
@@ -199,6 +229,94 @@
             color: #6a6a80;
             font-size: 14px;
         }
+        .history-panel {
+            background: #111820;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+        }
+        .history-toolbar {
+            margin-bottom: 16px;
+        }
+        .history-search {
+            width: 100%;
+            background: #0b1117;
+            color: #e5edf5;
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 15px;
+            outline: none;
+        }
+        .history-search:focus {
+            border-color: #2dd4bf;
+            box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.12);
+        }
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .history-item {
+            display: grid;
+            grid-template-columns: 108px minmax(0, 1fr);
+            gap: 14px;
+            padding: 14px;
+            border-radius: 10px;
+            background: #0c1218;
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            color: inherit;
+            text-decoration: none;
+        }
+        .history-item:hover {
+            border-color: rgba(45, 212, 191, 0.45);
+            background: #0f1720;
+        }
+        .history-date {
+            color: #2dd4bf;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            padding-top: 2px;
+        }
+        .history-title {
+            color: #edf5f7;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.45;
+            margin-bottom: 6px;
+        }
+        .history-summary {
+            color: #9aa9b8;
+            font-size: 13px;
+            line-height: 1.65;
+            margin-bottom: 8px;
+        }
+        .history-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            color: #7d8ea1;
+            font-size: 12px;
+        }
+        .history-chip {
+            background: rgba(45, 212, 191, 0.1);
+            color: #73e2d4;
+            border: 1px solid rgba(45, 212, 191, 0.18);
+            border-radius: 999px;
+            padding: 2px 8px;
+        }
+        .history-empty {
+            color: #9aa9b8;
+            text-align: center;
+            padding: 28px 12px;
+            border: 1px dashed rgba(148, 163, 184, 0.22);
+            border-radius: 10px;
+        }
+        @media (max-width: 640px) {
+            .history-item { grid-template-columns: 1fr; gap: 8px; }
+        }
         .footer {
             text-align: center;
             color: rgba(255,255,255,0.35);
@@ -209,32 +327,35 @@
 </head>
 <body>
     <div class="container">
+        <button class="history-entry" onclick="switchTab('history', this)">🔎 历史浏览</button>
         <div class="header">
             <div class="logo">🥕</div>
-            <h1>AI'm OK-2026-05-08</h1>
+            <h1>AI'm OK-2026-05-11</h1>
             <div class="subtitle">每日AI行业资讯精选 | 国内外多源聚合 | 用最少的时间掌握最新动态</div>
         <div class="stats">
-            <span class="stat">7 条精选</span>
+            <span class="stat">6 条精选</span>
             <span class="stat">🌐 1 条国际</span>
             <span class="stat">🏮 2 条国内</span>
-            <span class="stat">🎧 4 条AI音频</span>
-            <span class="stat">3 个来源</span>
+            <span class="stat">🎧 3 条AI音频</span>
+            <span class="stat">2 个来源</span>
         </div>
     </div>
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('intl', this)">🌐国际资讯<span class="tab-count">1</span></button>
-        <button class="tab-btn" onclick="switchTab('domestic', this)">🏮国内资讯<span class="tab-count">2</span></button>
-        <button class="tab-btn special" onclick="switchTab('audio', this)">🎧AI音频<span class="tab-count">4</span></button>
+        <div class="main-tabs">
+            <button class="tab-btn active" onclick="switchTab('intl', this)">🌐国际资讯<span class="tab-count">1</span></button>
+            <button class="tab-btn" onclick="switchTab('domestic', this)">🏮国内资讯<span class="tab-count">2</span></button>
+            <button class="tab-btn special" onclick="switchTab('audio', this)">🎧AI音频<span class="tab-count">3</span></button>
+        </div>
     </div>
         <div id="tab-intl" class="tab-content active">
             <div class="cards-grid">
-            <a class="card" href="https://developer.nvidia.com/blog/how-to-build-run-and-scale-high-quality-creator-workflows-in-comfyui/" target="_blank" rel="noopener">
-                <span class="source-badge badge-intl">🎵</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-open">开源</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>NVIDIA ComfyUI：本地化AI工具加速创意工作流程</strong></div>
-                <div class="card-summary">NVIDIA推出开源工具ComfyUI，通过RTX GPU实现图像分层、对象移除和照片转3D模型等自动化流程。该工具无需云服务，本地运行即可完成创意团队复杂任务，将原本耗时数小时的手动操作压缩为自动化流程，显著提升内容生产效率。</div>
+            <a class="card" href="https://techcrunch.com/2026/05/09/artificial-intelligence-definition-glossary-hallucinations-guide-to-common-ai-terms/" target="_blank" rel="noopener">
+                <span class="source-badge badge-intl">🌐</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-product">产品</span></div>
+                <div class="card-title"><strong>AI术语泛滥？TechCrunch发布权威定义指南</strong></div>
+                <div class="card-summary">随着AI技术发展，LLM、RAG、RLHF等术语大量涌现。TechCrunch最新指南系统梳理核心概念，帮助从业者准确理解AGI、AI agent等关键定义，消除行业交流障碍。</div>
                 <div class="card-meta">
-                    <span class="card-source">Audio Creator AI</span>
+                    <span class="card-source">TechCrunch</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
@@ -242,23 +363,23 @@
         </div>
         <div id="tab-domestic" class="tab-content">
             <div class="cards-grid">
-            <a class="card" href="http://www.bilibili.com/video/av116522227866394" target="_blank" rel="noopener">
-                <span class="source-badge badge-domestic">📺</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-llm">Agent</span></div>
-                <div class="card-title"><strong>零成本无限Token！Hermes+Qwen3.6本地Agent部署教程公开</strong></div>
-                <div class="card-summary">本教程公开Hermes与Qwen3.6的本地部署方案，实现零成本无限Token调用，为AI Agent开发提供高性价比实践路径。</div>
+            <a class="card" href="https://mp.weixin.qq.com/s/cHpdQj7GOiAO4bfEM9l0Eg" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📬</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">产品</span><span class="tag tag-research">研究</span></div>
+                <div class="card-title"><strong>Hermes Skills Hub上线：AI Agent技能生态平台开放600+工具</strong></div>
+                <div class="card-summary">Hermes Skills Hub上线，提供600+ AI Agent技能资源，采用插件化设计支持多系统集成，涵盖系统集成、开发工具等18个领域，助力开发者高效构建智能应用</div>
                 <div class="card-meta">
-                    <span class="card-source">B站</span>
+                    <span class="card-source">微信公众号</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="http://www.bilibili.com/video/av116486576342035" target="_blank" rel="noopener">
-                <span class="source-badge badge-domestic">📺</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-product">产品</span></div>
-                <div class="card-title"><strong>B站发布Spring AI实战教程：涵盖Ollama与AI Agent开发</strong></div>
-                <div class="card-summary">B站上线Spring AI技术教程，包含阿里巴巴实战案例与RAG技术解析，提供学习大纲及面试真题资源，助力开发者系统掌握AI工程化能力。</div>
+            <a class="card" href="https://mp.weixin.qq.com/s/CgiiYcojd3XpwfPfw3PrVQ" target="_blank" rel="noopener">
+                <span class="source-badge badge-domestic">📬</span>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">创作</span><span class="tag tag-llm">Agent</span></div>
+                <div class="card-title"><strong>RHTV实测：AI视频生成平台实现全流程透明化操作</strong></div>
+                <div class="card-summary">RHTV通过原生AI智能体实现视频创作全流程透明化，用户可实时调整分镜并接入170+模型生态，大幅降低专业视频制作门槛，提升创作效率。</div>
                 <div class="card-meta">
-                    <span class="card-source">B站</span>
+                    <span class="card-source">微信公众号</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
@@ -266,50 +387,1336 @@
         </div>
     <div id="tab-audio" class="tab-content">
         <div class="cards-grid">
-            <a class="card" href="https://mp.weixin.qq.com/s/UldKT6mIRf8sCwIRsMGWlA" target="_blank" rel="noopener">
+            <a class="card" href="https://mp.weixin.qq.com/s/_q0e8LQ-5vfrOXBLWSKwXg" target="_blank" rel="noopener">
                 <span class="source-badge badge-domestic">📬</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">实用</span><span class="tag tag-product">音频AI</span></div>
-                <div class="card-title"><strong>开源音乐大模型ACE-Step 1.5上线：本地部署免费商用</strong></div>
-                <div class="card-summary">ACE-Step 1.5通过LM+DiT双模块架构实现音乐生成全流程本地化，支持4GB至24GB显存设备部署。相较Suno的付费模式和版权限制，该开源模型提供免费商用方案，且允许按显存配置灵活组合模型模块。</div>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">音频AI</span><span class="tag tag-open">开源</span></div>
+                <div class="card-title"><strong>开源AI音乐工作站ACE-Step UI本地部署指南</strong></div>
+                <div class="card-summary">ACE-Step UI为开源音乐模型ACE-Step 1.5提供Spotify风格Web界面，支持本地零成本部署。相比Suno/Udio的云服务模式，用户可通过NVIDIA显卡运行完全免费的AI音乐生成系统，参数完整且无使用限制。</div>
                 <div class="card-meta">
                     <span class="card-source">微信公众号</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="https://mp.weixin.qq.com/s/27iyYx-Tixo9dkMZX2fNhA" target="_blank" rel="noopener">
+            <a class="card" href="https://mp.weixin.qq.com/s/hX5uUsDX1LsxiXU5tLQiKQ" target="_blank" rel="noopener">
                 <span class="source-badge badge-domestic">📬</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">音频AI</span><span class="tag tag-open">开源</span></div>
-                <div class="card-title"><strong>复旦团队开源MOSS-Audio，音频理解能力超越Gemini</strong></div>
-                <div class="card-summary">复旦OpenMOSS团队2026年4月开源的MOSS-Audio模型，通过单一架构实现语音识别、情绪感知、音乐理解等六项能力，其时间戳ASR误差较Gemini-3.1-Pro降低20倍，采用Apache 2.0协议开源，提供4B/8B参数版本，支持音频问答与事件检测等前沿应用。</div>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">音频AI</span><span class="tag tag-open">开源</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title"><strong>ACE-Step 1.5 XL实现商用级音乐生成，40亿参数本地运行</strong></div>
+                <div class="card-summary">ACE-Step 1.5 XL搭载40亿参数扩散Transformer解码器，支持10秒至10分钟音乐生成，音质达商用标准。三个版本提供不同侧重，MIT协议授权可商用，A100显卡生成完整歌曲仅需2秒。</div>
                 <div class="card-meta">
                     <span class="card-source">微信公众号</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
-            <a class="card" href="https://mp.weixin.qq.com/s/yddYvMfBea2UgJGRjpIDFw" target="_blank" rel="noopener">
+            <a class="card" href="https://mp.weixin.qq.com/s/8aZvZOp21oAcl5ZB2Ifqqw" target="_blank" rel="noopener">
                 <span class="source-badge badge-domestic">📬</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">音频AI</span><span class="tag tag-product">创作</span></div>
-                <div class="card-title"><strong>AI作曲提示词技巧：从塑料噪音到神曲的秘密</strong></div>
-                <div class="card-summary">本文拆解10个专业级Prompt技巧，揭示AI生成音乐质量差异的核心原因。通过结构化指令、参考艺人风格、动态情绪描述等方法，可显著提升AI作曲效果，适用于Suno/Udio等主流工具。</div>
-                <div class="card-meta">
-                    <span class="card-source">微信公众号</span>
-                    <span class="card-arrow">→</span>
-                </div>
-            </a>
-            <a class="card" href="https://mp.weixin.qq.com/s/71nJetrqMoKBFzSkvVeFGw" target="_blank" rel="noopener">
-                <span class="source-badge badge-domestic">📬</span>
-                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-llm">大模型</span><span class="tag tag-product">音频AI</span><span class="tag tag-product">创作</span></div>
-                <div class="card-title"><strong>语音大模型如何将声音转化为可计算符号</strong></div>
-                <div class="card-summary">本文解析语音Token化技术，揭示将连续音频转换为离散符号的三大技术路径：神经编解码+向量量化、自监督表征聚类、连续嵌入token。该技术是构建语音大模型的基础，直接影响语音生成、编辑等任务的实现方式。</div>
+                <div class="tags"><span class="tag-emoji">🤖</span> <span class="tag tag-product">实用</span><span class="tag tag-product">音频AI</span><span class="tag tag-product">创作</span></div>
+                <div class="card-title"><strong>AI音乐工具音虫SoundBug：新手也能轻松作曲编曲</strong></div>
+                <div class="card-summary">音虫SoundBug作为AI音乐工具，专为新手设计，提供AI编曲、工程模板等功能，降低音乐创作门槛，助力用户从零开始完成作曲、编曲及录音。</div>
                 <div class="card-meta">
                     <span class="card-source">微信公众号</span>
                     <span class="card-arrow">→</span>
                 </div>
             </a>
         </div>
+        </div>
+        <div id="tab-history" class="tab-content">
+            <div class="history-panel">
+                <div class="history-toolbar">
+                    <input id="historySearch" class="history-search" type="search" placeholder="搜索历史标题、摘要、来源或分类" oninput="filterHistory()" autocomplete="off">
+                </div>
+                <div id="historyList" class="history-list">
+                    <a class="history-item" href="https://techcrunch.com/2026/05/09/artificial-intelligence-definition-glossary-hallucinations-guide-to-common-ai-terms/" target="_blank" rel="noopener" data-history-text="AI术语泛滥？TechCrunch发布权威定义指南 随着AI技术发展，LLM、RAG、RLHF等术语大量涌现。TechCrunch最新指南系统梳理核心概念，帮助从业者准确理解AGI、AI agent等关键定义，消除行业交流障碍。 TechCrunch 国际资讯 2026-05-11">
+                        <div class="history-date">2026-05-11</div>
+                        <div>
+                            <div class="history-title">AI术语泛滥？TechCrunch发布权威定义指南</div>
+                            <div class="history-summary">随着AI技术发展，LLM、RAG、RLHF等术语大量涌现。TechCrunch最新指南系统梳理核心概念，帮助从业者准确理解AGI、AI agent等关键定义，消除行业交流障碍。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">国际资讯</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/cHpdQj7GOiAO4bfEM9l0Eg" target="_blank" rel="noopener" data-history-text="Hermes Skills Hub上线：AI Agent技能生态平台开放600+工具 Hermes Skills Hub上线，提供600+ AI Agent技能资源，采用插件化设计支持多系统集成，涵盖系统集成、开发工具等18个领域，助力开发者高效构建智能应用 微信公众号 国内资讯 2026-05-11">
+                        <div class="history-date">2026-05-11</div>
+                        <div>
+                            <div class="history-title">Hermes Skills Hub上线：AI Agent技能生态平台开放600+工具</div>
+                            <div class="history-summary">Hermes Skills Hub上线，提供600+ AI Agent技能资源，采用插件化设计支持多系统集成，涵盖系统集成、开发工具等18个领域，助力开发者高效构建智能应用</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">国内资讯</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/CgiiYcojd3XpwfPfw3PrVQ" target="_blank" rel="noopener" data-history-text="RHTV实测：AI视频生成平台实现全流程透明化操作 RHTV通过原生AI智能体实现视频创作全流程透明化，用户可实时调整分镜并接入170+模型生态，大幅降低专业视频制作门槛，提升创作效率。 微信公众号 国内资讯 2026-05-11">
+                        <div class="history-date">2026-05-11</div>
+                        <div>
+                            <div class="history-title">RHTV实测：AI视频生成平台实现全流程透明化操作</div>
+                            <div class="history-summary">RHTV通过原生AI智能体实现视频创作全流程透明化，用户可实时调整分镜并接入170+模型生态，大幅降低专业视频制作门槛，提升创作效率。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">国内资讯</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/_q0e8LQ-5vfrOXBLWSKwXg" target="_blank" rel="noopener" data-history-text="开源AI音乐工作站ACE-Step UI本地部署指南 ACE-Step UI为开源音乐模型ACE-Step 1.5提供Spotify风格Web界面，支持本地零成本部署。相比Suno/Udio的云服务模式，用户可通过NVIDIA显卡运行完全免费的AI音乐生成系统，参数完整且无使用限制。 微信公众号 AI音频 2026-05-11">
+                        <div class="history-date">2026-05-11</div>
+                        <div>
+                            <div class="history-title">开源AI音乐工作站ACE-Step UI本地部署指南</div>
+                            <div class="history-summary">ACE-Step UI为开源音乐模型ACE-Step 1.5提供Spotify风格Web界面，支持本地零成本部署。相比Suno/Udio的云服务模式，用户可通过NVIDIA显卡运行完全免费的AI音乐生成系统，参数完整且无使用限制。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/hX5uUsDX1LsxiXU5tLQiKQ" target="_blank" rel="noopener" data-history-text="ACE-Step 1.5 XL实现商用级音乐生成，40亿参数本地运行 ACE-Step 1.5 XL搭载40亿参数扩散Transformer解码器，支持10秒至10分钟音乐生成，音质达商用标准。三个版本提供不同侧重，MIT协议授权可商用，A100显卡生成完整歌曲仅需2秒。 微信公众号 AI音频 2026-05-11">
+                        <div class="history-date">2026-05-11</div>
+                        <div>
+                            <div class="history-title">ACE-Step 1.5 XL实现商用级音乐生成，40亿参数本地运行</div>
+                            <div class="history-summary">ACE-Step 1.5 XL搭载40亿参数扩散Transformer解码器，支持10秒至10分钟音乐生成，音质达商用标准。三个版本提供不同侧重，MIT协议授权可商用，A100显卡生成完整歌曲仅需2秒。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/8aZvZOp21oAcl5ZB2Ifqqw" target="_blank" rel="noopener" data-history-text="AI音乐工具音虫SoundBug：新手也能轻松作曲编曲 音虫SoundBug作为AI音乐工具，专为新手设计，提供AI编曲、工程模板等功能，降低音乐创作门槛，助力用户从零开始完成作曲、编曲及录音。 微信公众号 AI音频 2026-05-11">
+                        <div class="history-date">2026-05-11</div>
+                        <div>
+                            <div class="history-title">AI音乐工具音虫SoundBug：新手也能轻松作曲编曲</div>
+                            <div class="history-summary">音虫SoundBug作为AI音乐工具，专为新手设计，提供AI编曲、工程模板等功能，降低音乐创作门槛，助力用户从零开始完成作曲、编曲及录音。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://developer.nvidia.com/blog/how-to-build-run-and-scale-high-quality-creator-workflows-in-comfyui/" target="_blank" rel="noopener" data-history-text="NVIDIA ComfyUI：本地化AI工具加速创意工作流程 NVIDIA推出开源工具ComfyUI，通过RTX GPU实现图像分层、对象移除和照片转3D模型等自动化流程。该工具无需云服务，本地运行即可完成创意团队复杂任务，将原本耗时数小时的手动操作压缩为自动化流程，显著提升内容生产效率。 Audio Creator AI 历史 2026-05-08">
+                        <div class="history-date">2026-05-08</div>
+                        <div>
+                            <div class="history-title">NVIDIA ComfyUI：本地化AI工具加速创意工作流程</div>
+                            <div class="history-summary">NVIDIA推出开源工具ComfyUI，通过RTX GPU实现图像分层、对象移除和照片转3D模型等自动化流程。该工具无需云服务，本地运行即可完成创意团队复杂任务，将原本耗时数小时的手动操作压缩为自动化流程，显著提升内容生产效率。</div>
+                            <div class="history-meta">
+                                <span>Audio Creator AI</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="http://www.bilibili.com/video/av116522227866394" target="_blank" rel="noopener" data-history-text="零成本无限Token！Hermes+Qwen3.6本地Agent部署教程公开 本教程公开Hermes与Qwen3.6的本地部署方案，实现零成本无限Token调用，为AI Agent开发提供高性价比实践路径。 B站 历史 2026-05-08">
+                        <div class="history-date">2026-05-08</div>
+                        <div>
+                            <div class="history-title">零成本无限Token！Hermes+Qwen3.6本地Agent部署教程公开</div>
+                            <div class="history-summary">本教程公开Hermes与Qwen3.6的本地部署方案，实现零成本无限Token调用，为AI Agent开发提供高性价比实践路径。</div>
+                            <div class="history-meta">
+                                <span>B站</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="http://www.bilibili.com/video/av116486576342035" target="_blank" rel="noopener" data-history-text="B站发布Spring AI实战教程：涵盖Ollama与AI Agent开发 B站上线Spring AI技术教程，包含阿里巴巴实战案例与RAG技术解析，提供学习大纲及面试真题资源，助力开发者系统掌握AI工程化能力。 B站 历史 2026-05-08">
+                        <div class="history-date">2026-05-08</div>
+                        <div>
+                            <div class="history-title">B站发布Spring AI实战教程：涵盖Ollama与AI Agent开发</div>
+                            <div class="history-summary">B站上线Spring AI技术教程，包含阿里巴巴实战案例与RAG技术解析，提供学习大纲及面试真题资源，助力开发者系统掌握AI工程化能力。</div>
+                            <div class="history-meta">
+                                <span>B站</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/UldKT6mIRf8sCwIRsMGWlA" target="_blank" rel="noopener" data-history-text="开源音乐大模型ACE-Step 1.5上线：本地部署免费商用 ACE-Step 1.5通过LM+DiT双模块架构实现音乐生成全流程本地化，支持4GB至24GB显存设备部署。相较Suno的付费模式和版权限制，该开源模型提供免费商用方案，且允许按显存配置灵活组合模型模块。 微信公众号 AI音频 2026-05-08">
+                        <div class="history-date">2026-05-08</div>
+                        <div>
+                            <div class="history-title">开源音乐大模型ACE-Step 1.5上线：本地部署免费商用</div>
+                            <div class="history-summary">ACE-Step 1.5通过LM+DiT双模块架构实现音乐生成全流程本地化，支持4GB至24GB显存设备部署。相较Suno的付费模式和版权限制，该开源模型提供免费商用方案，且允许按显存配置灵活组合模型模块。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/27iyYx-Tixo9dkMZX2fNhA" target="_blank" rel="noopener" data-history-text="复旦团队开源MOSS-Audio，音频理解能力超越Gemini 复旦OpenMOSS团队2026年4月开源的MOSS-Audio模型，通过单一架构实现语音识别、情绪感知、音乐理解等六项能力，其时间戳ASR误差较Gemini-3.1-Pro降低20倍，采用Apache 2.0协议开源，提供4B/8B参数版本，支持音频问答与事件检测等前沿应用。 微信公众号 AI音频 2026-05-08">
+                        <div class="history-date">2026-05-08</div>
+                        <div>
+                            <div class="history-title">复旦团队开源MOSS-Audio，音频理解能力超越Gemini</div>
+                            <div class="history-summary">复旦OpenMOSS团队2026年4月开源的MOSS-Audio模型，通过单一架构实现语音识别、情绪感知、音乐理解等六项能力，其时间戳ASR误差较Gemini-3.1-Pro降低20倍，采用Apache 2.0协议开源，提供4B/8B参数版本，支持音频问答与事件检测等前沿应用。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/yddYvMfBea2UgJGRjpIDFw" target="_blank" rel="noopener" data-history-text="AI作曲提示词技巧：从塑料噪音到神曲的秘密 本文拆解10个专业级Prompt技巧，揭示AI生成音乐质量差异的核心原因。通过结构化指令、参考艺人风格、动态情绪描述等方法，可显著提升AI作曲效果，适用于Suno/Udio等主流工具。 微信公众号 AI音频 2026-05-08">
+                        <div class="history-date">2026-05-08</div>
+                        <div>
+                            <div class="history-title">AI作曲提示词技巧：从塑料噪音到神曲的秘密</div>
+                            <div class="history-summary">本文拆解10个专业级Prompt技巧，揭示AI生成音乐质量差异的核心原因。通过结构化指令、参考艺人风格、动态情绪描述等方法，可显著提升AI作曲效果，适用于Suno/Udio等主流工具。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/71nJetrqMoKBFzSkvVeFGw" target="_blank" rel="noopener" data-history-text="语音大模型如何将声音转化为可计算符号 本文解析语音Token化技术，揭示将连续音频转换为离散符号的三大技术路径：神经编解码+向量量化、自监督表征聚类、连续嵌入token。该技术是构建语音大模型的基础，直接影响语音生成、编辑等任务的实现方式。 微信公众号 AI音频 2026-05-08">
+                        <div class="history-date">2026-05-08</div>
+                        <div>
+                            <div class="history-title">语音大模型如何将声音转化为可计算符号</div>
+                            <div class="history-summary">本文解析语音Token化技术，揭示将连续音频转换为离散符号的三大技术路径：神经编解码+向量量化、自监督表征聚类、连续嵌入token。该技术是构建语音大模型的基础，直接影响语音生成、编辑等任务的实现方式。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://developer.nvidia.com/blog/24-7-simulation-loops-how-agentic-ai-keeps-subsurface-engineering-moving/" target="_blank" rel="noopener" data-history-text="NVIDIA Agentic AI助力地下工程突破24/7模拟瓶颈 石油天然气行业面临模拟流程效率瓶颈，NVIDIA通过Agentic AI实现全天候自动化模拟循环，解决人工数据处理延迟问题，将项目周期从多日缩短至标准24小时，推动全球团队协作效率提升。 AI Audio Discovery 历史 2026-04-29">
+                        <div class="history-date">2026-04-29</div>
+                        <div>
+                            <div class="history-title">NVIDIA Agentic AI助力地下工程突破24/7模拟瓶颈</div>
+                            <div class="history-summary">石油天然气行业面临模拟流程效率瓶颈，NVIDIA通过Agentic AI实现全天候自动化模拟循环，解决人工数据处理延迟问题，将项目周期从多日缩短至标准24小时，推动全球团队协作效率提升。</div>
+                            <div class="history-meta">
+                                <span>AI Audio Discovery</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/G9RdEV6yk6xQo8UcTXG-Ow" target="_blank" rel="noopener" data-history-text="DeepSeek识图模式上线：多模态能力‘开眼’实测 DeepSeek上线灰测识图模式，首次展现多模态推理能力。测试显示其能通过图像隐喻推断信息，思考过程包含自我追问与修正，突破传统AI单纯描述图像的局限，标志着大模型视觉理解能力的重要进展。 微信公众号 历史 2026-04-29">
+                        <div class="history-date">2026-04-29</div>
+                        <div>
+                            <div class="history-title">DeepSeek识图模式上线：多模态能力‘开眼’实测</div>
+                            <div class="history-summary">DeepSeek上线灰测识图模式，首次展现多模态推理能力。测试显示其能通过图像隐喻推断信息，思考过程包含自我追问与修正，突破传统AI单纯描述图像的局限，标志着大模型视觉理解能力的重要进展。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/HuWr9vzdrY96c1fH1AwS-Q" target="_blank" rel="noopener" data-history-text="Hugging Face开源红警AI训练场：消费级显卡即可训练RTS智能体 Hugging Face推出OpenRA-RL项目，将经典RTS游戏《红色警戒》改造为AI训练基础设施，提供50个MCP工具接口和64局并发训练能力。实测显示AI能构建经济体系但缺乏战斗能力，为研究者提供可复用的开源训练框架和失败模式诊断数据。 微信公众号 历史 2026-04-29">
+                        <div class="history-date">2026-04-29</div>
+                        <div>
+                            <div class="history-title">Hugging Face开源红警AI训练场：消费级显卡即可训练RTS智能体</div>
+                            <div class="history-summary">Hugging Face推出OpenRA-RL项目，将经典RTS游戏《红色警戒》改造为AI训练基础设施，提供50个MCP工具接口和64局并发训练能力。实测显示AI能构建经济体系但缺乏战斗能力，为研究者提供可复用的开源训练框架和失败模式诊断数据。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/CpedmQKSQytZ5CeldSq8JA" target="_blank" rel="noopener" data-history-text="GPT图像生成测试：游戏素材应用效果如何？ 本文测试了GPT图像模型生成游戏素材的效果，涵盖像素风格、中国元素等UI组件，为游戏开发提供可参考的AI生成素材案例。 微信公众号 历史 2026-04-29">
+                        <div class="history-date">2026-04-29</div>
+                        <div>
+                            <div class="history-title">GPT图像生成测试：游戏素材应用效果如何？</div>
+                            <div class="history-summary">本文测试了GPT图像模型生成游戏素材的效果，涵盖像素风格、中国元素等UI组件，为游戏开发提供可参考的AI生成素材案例。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.qbitai.com/2026/04/411133.html" target="_blank" rel="noopener" data-history-text="Kimi K2.6设计能力碾压Claude Design引热议 月之暗面Kimi K2.6以85%价格优势超越Claude Design，实测展示前端+vibe coding能力，通过Agent Swarm模式实现30家店铺落地页并行生成，引发行业对AI全栈能力的关注。 量子位 历史 2026-04-29">
+                        <div class="history-date">2026-04-29</div>
+                        <div>
+                            <div class="history-title">Kimi K2.6设计能力碾压Claude Design引热议</div>
+                            <div class="history-summary">月之暗面Kimi K2.6以85%价格优势超越Claude Design，实测展示前端+vibe coding能力，通过Agent Swarm模式实现30家店铺落地页并行生成，引发行业对AI全栈能力的关注。</div>
+                            <div class="history-meta">
+                                <span>量子位</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/dZ0Dvh6WXdjwOOFX3w9j-w" target="_blank" rel="noopener" data-history-text="GitHub开源工具Audiblez：AI生成多语言有声书 Audiblez基于Kokoro-82M语音模型，可将电子书一键转为支持9种语言的有声书，开源免费且获6.3k Stars。其图形界面与GPU加速功能显著提升转换效率，为多语言有声书制作提供实用方案。 微信公众号 AI音频 2026-04-29">
+                        <div class="history-date">2026-04-29</div>
+                        <div>
+                            <div class="history-title">GitHub开源工具Audiblez：AI生成多语言有声书</div>
+                            <div class="history-summary">Audiblez基于Kokoro-82M语音模型，可将电子书一键转为支持9种语言的有声书，开源免费且获6.3k Stars。其图形界面与GPU加速功能显著提升转换效率，为多语言有声书制作提供实用方案。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/CnIVQKC05wMxOkK73TDlTw" target="_blank" rel="noopener" data-history-text="SoliderSound推出Go-Compose：离线AI音乐生成工具上线 SoliderSound推出适用于macOS的Go-Compose，支持本地离线生成完整歌曲、节拍和歌词，无需订阅。该工具专为音乐制作人设计，提供三步工作流，可直接导出WAV/FLAC/MP3格式，适用于小样制作、风格探索等场景。 微信公众号 AI音频 2026-04-29">
+                        <div class="history-date">2026-04-29</div>
+                        <div>
+                            <div class="history-title">SoliderSound推出Go-Compose：离线AI音乐生成工具上线</div>
+                            <div class="history-summary">SoliderSound推出适用于macOS的Go-Compose，支持本地离线生成完整歌曲、节拍和歌词，无需订阅。该工具专为音乐制作人设计，提供三步工作流，可直接导出WAV/FLAC/MP3格式，适用于小样制作、风格探索等场景。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/rO0XoialE53OO4FofomXmw" target="_blank" rel="noopener" data-history-text="6款免费AI配音工具合集，覆盖多场景音色转换 本文推荐6款免费AI配音工具，支持文本转语音及多种音色转换，适用于不同场景需求，为内容创作者提供实用解决方案 微信公众号 AI音频 2026-04-29">
+                        <div class="history-date">2026-04-29</div>
+                        <div>
+                            <div class="history-title">6款免费AI配音工具合集，覆盖多场景音色转换</div>
+                            <div class="history-summary">本文推荐6款免费AI配音工具，支持文本转语音及多种音色转换，适用于不同场景需求，为内容创作者提供实用解决方案</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/mgHr9BOJVv883fw96_nZlA" target="_blank" rel="noopener" data-history-text="OpenAI发布GPT-5.5：聚焦真实办公场景效率提升 OpenAI正式推出GPT-5.5，支持400K-1M token上下文，主打真实工作场景的效率提升。新模型在知识工作、编程、电脑操作等场景表现突出，价格仅为竞品Claude Mythos的四分之一，标志着OpenAI从‘天才模型’转向‘标准件’战略。 微信公众号 历史 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">OpenAI发布GPT-5.5：聚焦真实办公场景效率提升</div>
+                            <div class="history-summary">OpenAI正式推出GPT-5.5，支持400K-1M token上下文，主打真实工作场景的效率提升。新模型在知识工作、编程、电脑操作等场景表现突出，价格仅为竞品Claude Mythos的四分之一，标志着OpenAI从‘天才模型’转向‘标准件’战略。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/Z-hlh8VT8nMV66MX-MG1MQ" target="_blank" rel="noopener" data-history-text="OpenAI推出ChatGPT Images 2.0，设计师或将面临变革 OpenAI全新图像生成模型ChatGPT Images 2.0全量上线，生成画面更逼真、支持更多图像类型和风格，Chris实测用其优化产品UI设计，显著提升产品质感，展现AI工具对设计行业的颠覆潜力。 微信公众号 历史 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">OpenAI推出ChatGPT Images 2.0，设计师或将面临变革</div>
+                            <div class="history-summary">OpenAI全新图像生成模型ChatGPT Images 2.0全量上线，生成画面更逼真、支持更多图像类型和风格，Chris实测用其优化产品UI设计，显著提升产品质感，展现AI工具对设计行业的颠覆潜力。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/HUQuPYIPK9l-saB36kdoxg" target="_blank" rel="noopener" data-history-text="DeepSeek-V4与GPT-5.5实测对决：谁更胜一筹？ 2026年4月24日，OpenAI发布GPT-5.5，同日DeepSeek推出V4系列。实测显示，V4在超长上下文处理和KV缓存效率上表现突出，但逻辑推理题测试中，GPT-5.5反应更快且准确识别题目陷阱，凸显两者在推理能力上的差异化竞争。 微信公众号 历史 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">DeepSeek-V4与GPT-5.5实测对决：谁更胜一筹？</div>
+                            <div class="history-summary">2026年4月24日，OpenAI发布GPT-5.5，同日DeepSeek推出V4系列。实测显示，V4在超长上下文处理和KV缓存效率上表现突出，但逻辑推理题测试中，GPT-5.5反应更快且准确识别题目陷阱，凸显两者在推理能力上的差异化竞争。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/wdHCvUAAJtt3iPMoIlqlfg" target="_blank" rel="noopener" data-history-text="国内首个Image 2平替平台星流上线，解决AI设计落地难题 星流平台接入Lovart Image 2模型，通过文字编辑、精准重绘等功能实现包装改字、电商换装等场景的无损操作，降低AI设计落地门槛。该平台被业界称为Lovart中文版，提供国内直连的流畅体验。 微信公众号 历史 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">国内首个Image 2平替平台星流上线，解决AI设计落地难题</div>
+                            <div class="history-summary">星流平台接入Lovart Image 2模型，通过文字编辑、精准重绘等功能实现包装改字、电商换装等场景的无损操作，降低AI设计落地门槛。该平台被业界称为Lovart中文版，提供国内直连的流畅体验。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/BBHjDV9kMgOMZ-QMf3e56w" target="_blank" rel="noopener" data-history-text="匿名模型Ling 2.6 Flash实测：批量任务响应快17分钟，成本仅GPT-5.4-mini的1/10 实测百灵Ling 2.6 Flash在处理2000篇FTC新闻时，每篇比GPT-5.4-mini快0.53秒，总耗时减少17分钟，且拒绝编造缺失字段，成本仅为竞品的十分之一，展现批量处理场景的稳定性优势。 微信公众号 历史 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">匿名模型Ling 2.6 Flash实测：批量任务响应快17分钟，成本仅GPT-5.4-mini的1/10</div>
+                            <div class="history-summary">实测百灵Ling 2.6 Flash在处理2000篇FTC新闻时，每篇比GPT-5.4-mini快0.53秒，总耗时减少17分钟，且拒绝编造缺失字段，成本仅为竞品的十分之一，展现批量处理场景的稳定性优势。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="http://www.bilibili.com/video/av116457853689164" target="_blank" rel="noopener" data-history-text="阿里Qoder+微软Playwright CLI：浏览器自动化省Token新方案 通过阿里Qoder与微软Playwright CLI结合，利用语义快照替代CSS选择器，实现浏览器自动化操作零Token消耗。该方案可沉淀为永久免费的Skill，显著降低AI执行重复任务的成本。 B站 历史 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">阿里Qoder+微软Playwright CLI：浏览器自动化省Token新方案</div>
+                            <div class="history-summary">通过阿里Qoder与微软Playwright CLI结合，利用语义快照替代CSS选择器，实现浏览器自动化操作零Token消耗。该方案可沉淀为永久免费的Skill，显著降低AI执行重复任务的成本。</div>
+                            <div class="history-meta">
+                                <span>B站</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/n_51h6b2rlO5JKMqS-T9dA" target="_blank" rel="noopener" data-history-text="Claude上线交互式图表功能，三巨头同日押注AI可视化 Anthropic宣布Claude可生成可点击的交互式图表和流程图，用户点击元素即可展开详情。OpenAI和Google此前已推出类似功能，显示AI可视化能力成为行业竞争焦点。该功能基于HTML/SVG技术，支持Web端和桌面端，免费用户可直接使用。 微信公众号 历史 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">Claude上线交互式图表功能，三巨头同日押注AI可视化</div>
+                            <div class="history-summary">Anthropic宣布Claude可生成可点击的交互式图表和流程图，用户点击元素即可展开详情。OpenAI和Google此前已推出类似功能，显示AI可视化能力成为行业竞争焦点。该功能基于HTML/SVG技术，支持Web端和桌面端，免费用户可直接使用。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/77dyufF3MP8stHPS0BApNw" target="_blank" rel="noopener" data-history-text="Harness Engineering工程化落地：从理念到实战的12步拆解 本文以JK Launcher项目为案例，系统拆解Harness Engineering从0到1的搭建全流程，明确Rule、Skill、Workflow等核心概念的工程角色，为AI开发提供可复用的工程化方法论。 微信公众号 历史 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">Harness Engineering工程化落地：从理念到实战的12步拆解</div>
+                            <div class="history-summary">本文以JK Launcher项目为案例，系统拆解Harness Engineering从0到1的搭建全流程，明确Rule、Skill、Workflow等核心概念的工程角色，为AI开发提供可复用的工程化方法论。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/G22ey4_8-Onow5rPFIBDLg" target="_blank" rel="noopener" data-history-text="ACE Studio 2.0 新增 AI 配乐配音效，影视后期迈入新阶段 ACE Studio 2.0 新增 Video Composer 功能，支持 AI 自动生成视频配乐与音效，可优化影视后期工作流。该功能目前处于 Beta 测试阶段，AI 配乐效率突出但音效需人工微调，为创作者提供灵感辅助与商单处理工具。 微信公众号 AI音频 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">ACE Studio 2.0 新增 AI 配乐配音效，影视后期迈入新阶段</div>
+                            <div class="history-summary">ACE Studio 2.0 新增 Video Composer 功能，支持 AI 自动生成视频配乐与音效，可优化影视后期工作流。该功能目前处于 Beta 测试阶段，AI 配乐效率突出但音效需人工微调，为创作者提供灵感辅助与商单处理工具。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/4TfXl9d0ohiCyBfdVpRB8w" target="_blank" rel="noopener" data-history-text="阿里推出HappyHorse 1.0：千问APP免费体验AI视频生成 阿里ATH事业群推出的HappyHorse 1.0视频生成模型已在通义APP开放免费体验，支持1080P分辨率及多宽高比选择。该模型通过自然镜头调度和精准风格还原，在AI视频生成领域展现显著优势，实测表现优于同类产品。 微信公众号 历史 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">阿里推出HappyHorse 1.0：千问APP免费体验AI视频生成</div>
+                            <div class="history-summary">阿里ATH事业群推出的HappyHorse 1.0视频生成模型已在通义APP开放免费体验，支持1080P分辨率及多宽高比选择。该模型通过自然镜头调度和精准风格还原，在AI视频生成领域展现显著优势，实测表现优于同类产品。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/mIvALhN8VU5rhhl63-tcMg" target="_blank" rel="noopener" data-history-text="全球首个AI音乐社区上线：音述AI助力无乐理创作 音述AI推出免费在线AI写歌平台，主打中文音乐创作，无需乐理基础即可参与共创，降低音乐创作门槛。 微信公众号 AI音频 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">全球首个AI音乐社区上线：音述AI助力无乐理创作</div>
+                            <div class="history-summary">音述AI推出免费在线AI写歌平台，主打中文音乐创作，无需乐理基础即可参与共创，降低音乐创作门槛。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/JWFmKY9FBs3tItSptgOF-w" target="_blank" rel="noopener" data-history-text="华南理工MAGIC-TTS：全球首个实现token级时长与停顿控制的零样本语音合成模型 华南理工大学团队发布MAGIC-TTS，全球首个实现token级时长与停顿精确控制的零样本语音合成模型，突破传统TTS无法局部调节节奏的限制，为导航、有声书等场景提供精准语音生成方案。 微信公众号 AI音频 2026-04-28">
+                        <div class="history-date">2026-04-28</div>
+                        <div>
+                            <div class="history-title">华南理工MAGIC-TTS：全球首个实现token级时长与停顿控制的零样本语音合成模型</div>
+                            <div class="history-summary">华南理工大学团队发布MAGIC-TTS，全球首个实现token级时长与停顿精确控制的零样本语音合成模型，突破传统TTS无法局部调节节奏的限制，为导航、有声书等场景提供精准语音生成方案。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://api-docs.deepseek.com/news/news260424" target="_blank" rel="noopener" data-history-text="DeepSeek发布V4大模型：参数规模与推理能力全面升级 DeepSeek正式开源V4系列模型，其中V4-Pro参数量达1.6T，推理能力超越当前主流闭源模型，V4-Flash则以更小参数实现接近V4-Pro的性能，提供更优成本效益。该系列模型在代理编码、世界知识和数学推理等维度展现显著优势。 Hacker News 历史 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">DeepSeek发布V4大模型：参数规模与推理能力全面升级</div>
+                            <div class="history-summary">DeepSeek正式开源V4系列模型，其中V4-Pro参数量达1.6T，推理能力超越当前主流闭源模型，V4-Flash则以更小参数实现接近V4-Pro的性能，提供更优成本效益。该系列模型在代理编码、世界知识和数学推理等维度展现显著优势。</div>
+                            <div class="history-meta">
+                                <span>Hacker News</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://developer.nvidia.com/blog/mitigating-indirect-agents-md-injection-attacks-in-agentic-environments/" target="_blank" rel="noopener" data-history-text="NVIDIA发现AI工具新安全漏洞：间接注入攻击威胁软件开发 NVIDIA AI红队发现Codex工具存在间接AGENTS.md注入攻击漏洞，通过恶意依赖链实现代码注入，揭示了代理开发环境特有的供应链安全风险，凸显AI辅助开发中的新型安全挑战。 Audio Creator AI 历史 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">NVIDIA发现AI工具新安全漏洞：间接注入攻击威胁软件开发</div>
+                            <div class="history-summary">NVIDIA AI红队发现Codex工具存在间接AGENTS.md注入攻击漏洞，通过恶意依赖链实现代码注入，揭示了代理开发环境特有的供应链安全风险，凸显AI辅助开发中的新型安全挑战。</div>
+                            <div class="history-meta">
+                                <span>Audio Creator AI</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/" target="_blank" rel="noopener" data-history-text="DeepSeek发布V4模型：处理更长文本，开源引发行业关注 DeepSeek发布新一代旗舰模型V4，支持更长文本处理并保持开源特性。该模型延续了R1模型的高效性能，其技术突破可能推动中国AI企业开放权重模型的浪潮，对行业技术发展具有参考价值。 AI Frontier 历史 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">DeepSeek发布V4模型：处理更长文本，开源引发行业关注</div>
+                            <div class="history-summary">DeepSeek发布新一代旗舰模型V4，支持更长文本处理并保持开源特性。该模型延续了R1模型的高效性能，其技术突破可能推动中国AI企业开放权重模型的浪潮，对行业技术发展具有参考价值。</div>
+                            <div class="history-meta">
+                                <span>AI Frontier</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://developer.nvidia.com/blog/build-with-deepseek-v4-using-nvidia-blackwell-and-gpu-accelerated-endpoints/" target="_blank" rel="noopener" data-history-text="DeepSeek发布第四代模型V4-Pro与V4-Flash，支持百万级上下文处理 DeepSeek推出第四代模型V4-Pro和V4-Flash，分别拥有1.6万亿和2840亿参数，支持百万级上下文处理，显著降低推理计算量和内存负担，推动代理AI工作流程发展 AI Frontier 历史 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">DeepSeek发布第四代模型V4-Pro与V4-Flash，支持百万级上下文处理</div>
+                            <div class="history-summary">DeepSeek推出第四代模型V4-Pro和V4-Flash，分别拥有1.6万亿和2840亿参数，支持百万级上下文处理，显著降低推理计算量和内存负担，推动代理AI工作流程发展</div>
+                            <div class="history-meta">
+                                <span>AI Frontier</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://techcrunch.com/2026/04/24/mac-mini-price-expensive-ebay-shortage-ai-memory/" target="_blank" rel="noopener" data-history-text="AI工具需求激增致Mac mini短缺，eBay高价转售成风 苹果M4 Mac mini因AI模型运行需求激增导致缺货，eBay上出现溢价转售现象。该设备成为运行OpenClaw等本地AI工具的热门硬件，部分配置需等待6月才能发货。 TechCrunch 历史 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">AI工具需求激增致Mac mini短缺，eBay高价转售成风</div>
+                            <div class="history-summary">苹果M4 Mac mini因AI模型运行需求激增导致缺货，eBay上出现溢价转售现象。该设备成为运行OpenClaw等本地AI工具的热门硬件，部分配置需等待6月才能发货。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.technologyreview.com/2026/04/24/1136352/health-care-ai-dont-know-actually-helps-patients/" target="_blank" rel="noopener" data-history-text="医疗AI全面应用，但疗效仍存疑 AI在医疗领域已广泛用于病历记录、影像分析等场景，但《自然医学》最新论文指出，目前尚无充分证据表明这些技术能真正改善患者健康结果，医疗机构在部署AI工具时普遍缺乏严谨评估。 MIT Tech Review 历史 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">医疗AI全面应用，但疗效仍存疑</div>
+                            <div class="history-summary">AI在医疗领域已广泛用于病历记录、影像分析等场景，但《自然医学》最新论文指出，目前尚无充分证据表明这些技术能真正改善患者健康结果，医疗机构在部署AI工具时普遍缺乏严谨评估。</div>
+                            <div class="history-meta">
+                                <span>MIT Tech Review</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/yATQ-TUhOqn98Be9EifE5A" target="_blank" rel="noopener" data-history-text="通义千问开源Qwen3.6-27B，智能体编程性能超越前代旗舰 阿里Qwen3.6-27B模型在四大智能体编程基准上全面超越前代397B版本，仅用1/15参数量实现性能突破。采用密集架构提升部署效率，原生支持多模态理解，开源权重已同步至Hugging Face和ModelScope，开发者可直接调用。 微信公众号 历史 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">通义千问开源Qwen3.6-27B，智能体编程性能超越前代旗舰</div>
+                            <div class="history-summary">阿里Qwen3.6-27B模型在四大智能体编程基准上全面超越前代397B版本，仅用1/15参数量实现性能突破。采用密集架构提升部署效率，原生支持多模态理解，开源权重已同步至Hugging Face和ModelScope，开发者可直接调用。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/s1jhzL6DEY65nNSk4QIyoQ" target="_blank" rel="noopener" data-history-text="DeepSeek V4震撼发布 开源模型性能突破闭源极限 DeepSeek正式发布V4系列开源模型，其Pro版本在Agent编程、世界知识和逻辑推理三方面达到开源巅峰，性能对标顶级闭源模型。通过混合注意力机制等三大技术创新，实现百万级上下文处理能力，推理效率较前代提升显著。 微信公众号 历史 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">DeepSeek V4震撼发布 开源模型性能突破闭源极限</div>
+                            <div class="history-summary">DeepSeek正式发布V4系列开源模型，其Pro版本在Agent编程、世界知识和逻辑推理三方面达到开源巅峰，性能对标顶级闭源模型。通过混合注意力机制等三大技术创新，实现百万级上下文处理能力，推理效率较前代提升显著。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/56gzrcs6KYhN0OWqkpdd1A" target="_blank" rel="noopener" data-history-text="DeepSeek V4发布：昇腾适配，AtomGit首发 DeepSeek V4系列模型于2026年4月24日正式发布并同步开源，适配昇腾平台，AtomGit首发上线，推动大模型技术开放应用。 微信公众号 历史 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">DeepSeek V4发布：昇腾适配，AtomGit首发</div>
+                            <div class="history-summary">DeepSeek V4系列模型于2026年4月24日正式发布并同步开源，适配昇腾平台，AtomGit首发上线，推动大模型技术开放应用。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://36kr.com/p/3780910411193602?f=rss" target="_blank" rel="noopener" data-history-text="中科天塔发布激光通信终端，推动太空智驾三级跨越 随着卫星数量激增，中科天塔推出新一代星载激光通信终端，结合AI大模型实现自主决策，解决太空交通管理难题。该技术已与头部卫星公司合作，计划年产能超500套，推动卫星管理模式从人工到AI自主的跨越。 36氪 历史 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">中科天塔发布激光通信终端，推动太空智驾三级跨越</div>
+                            <div class="history-summary">随着卫星数量激增，中科天塔推出新一代星载激光通信终端，结合AI大模型实现自主决策，解决太空交通管理难题。该技术已与头部卫星公司合作，计划年产能超500套，推动卫星管理模式从人工到AI自主的跨越。</div>
+                            <div class="history-meta">
+                                <span>36氪</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://techcrunch.com/2026/04/24/nothing-introduces-an-ai-powered-dictation-tool/" target="_blank" rel="noopener" data-history-text="Nothing推出AI语音转文字工具Essential Voice Nothing推出AI语音转文字工具Essential Voice，支持100+语言，可自动去除语气词并创建自定义语音快捷短语。该工具已上线Phone(3)设备，后续将扩展至Phone(4a)系列，通过语音输入实现比键盘输入快4倍的效率。 TechCrunch AI音频 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">Nothing推出AI语音转文字工具Essential Voice</div>
+                            <div class="history-summary">Nothing推出AI语音转文字工具Essential Voice，支持100+语言，可自动去除语气词并创建自定义语音快捷短语。该工具已上线Phone(3)设备，后续将扩展至Phone(4a)系列，通过语音输入实现比键盘输入快4倍的效率。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/66ZtKMx7OsxcTps9aBELCA" target="_blank" rel="noopener" data-history-text="VibeVoice TTS框架发布：突破多说话者语音生成难题 VibeVoice框架通过解决传统TTS系统在可扩展性、说话者一致性及自然对话转换方面的技术瓶颈，实现了长篇多说话者对话音频的高质量生成，为播客等内容创作提供新工具。教程因官方限制需通过公众号获取。 微信公众号 AI音频 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">VibeVoice TTS框架发布：突破多说话者语音生成难题</div>
+                            <div class="history-summary">VibeVoice框架通过解决传统TTS系统在可扩展性、说话者一致性及自然对话转换方面的技术瓶颈，实现了长篇多说话者对话音频的高质量生成，为播客等内容创作提供新工具。教程因官方限制需通过公众号获取。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/p2w6V5RSXJJbDs_8E502Ww" target="_blank" rel="noopener" data-history-text="国产语音模型推理速度提升400%，成本下降80% 阶跃星辰发布新一代语音识别模型StepAudio 2.5 ASR，推理速度提升400%、时延降低60%、成本下降80%，支持长音频一次性转写，定价降至0.15元/小时，但实际测试中对部分音频输入适应性存在差异。 微信公众号 AI音频 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">国产语音模型推理速度提升400%，成本下降80%</div>
+                            <div class="history-summary">阶跃星辰发布新一代语音识别模型StepAudio 2.5 ASR，推理速度提升400%、时延降低60%、成本下降80%，支持长音频一次性转写，定价降至0.15元/小时，但实际测试中对部分音频输入适应性存在差异。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/yBgZVzS28-WnG2KzQYAR0w" target="_blank" rel="noopener" data-history-text="港科大联合腾讯发布Audio-Omni：首个统一音频理解生成编辑模型 香港科技大学联合腾讯微信视觉团队与北京大学提出Audio-Omni，这是首个在统一框架下支持通用声音、音乐、语音三大领域理解、生成与编辑的多模态模型，已开源并被SIGGRAPH 2026接收。 微信公众号 AI音频 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">港科大联合腾讯发布Audio-Omni：首个统一音频理解生成编辑模型</div>
+                            <div class="history-summary">香港科技大学联合腾讯微信视觉团队与北京大学提出Audio-Omni，这是首个在统一框架下支持通用声音、音乐、语音三大领域理解、生成与编辑的多模态模型，已开源并被SIGGRAPH 2026接收。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/QNq64rZaqZG04lUP7wT50g" target="_blank" rel="noopener" data-history-text="2026下半年AI音乐四大趋势：空间音频、实时交互、人机协同、版权规范落地 2026下半年AI音乐将突破音质局限，实现空间音频与实时交互，人机协同成为标准工作流，版权规范全面落地，推动行业从‘好不好听’转向‘身在何处’的沉浸式体验革命。 微信公众号 AI音频 2026-04-25">
+                        <div class="history-date">2026-04-25</div>
+                        <div>
+                            <div class="history-title">2026下半年AI音乐四大趋势：空间音频、实时交互、人机协同、版权规范落地</div>
+                            <div class="history-summary">2026下半年AI音乐将突破音质局限，实现空间音频与实时交互，人机协同成为标准工作流，版权规范全面落地，推动行业从‘好不好听’转向‘身在何处’的沉浸式体验革命。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.qbitai.com/2026/04/406359.html" target="_blank" rel="noopener" data-history-text="DeepSeek V4发布：打破闭源垄断，携手华为算力 DeepSeek V4正式上线并开源，实现Agent能力、世界知识和推理性能国内与开源领域领先。通过创新注意力机制实现百万上下文标配，技术细节显示其对计算和显存需求大幅降低，同时明确下半年将批量采用华为算力。 量子位 历史 2026-04-24">
+                        <div class="history-date">2026-04-24</div>
+                        <div>
+                            <div class="history-title">DeepSeek V4发布：打破闭源垄断，携手华为算力</div>
+                            <div class="history-summary">DeepSeek V4正式上线并开源，实现Agent能力、世界知识和推理性能国内与开源领域领先。通过创新注意力机制实现百万上下文标配，技术细节显示其对计算和显存需求大幅降低，同时明确下半年将批量采用华为算力。</div>
+                            <div class="history-meta">
+                                <span>量子位</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="http://www.bilibili.com/video/av116449934838787" target="_blank" rel="noopener" data-history-text="EasyClick AI发布UI生成智能体：需求转代码，一键预览 该工具通过AI实现从UI需求到代码的自动生成，配合EC cli实时预览功能，或将重构UI开发流程，提升设计到落地的效率。 B站 历史 2026-04-24">
+                        <div class="history-date">2026-04-24</div>
+                        <div>
+                            <div class="history-title">EasyClick AI发布UI生成智能体：需求转代码，一键预览</div>
+                            <div class="history-summary">该工具通过AI实现从UI需求到代码的自动生成，配合EC cli实时预览功能，或将重构UI开发流程，提升设计到落地的效率。</div>
+                            <div class="history-meta">
+                                <span>B站</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/jzWwJ2lEErzZmr6x6JSnGQ" target="_blank" rel="noopener" data-history-text="Anthropic承认Claude Code性能下降源于三大技术问题 Anthropic官方披露Claude Code近期性能下降实为三个技术Bug所致，包括推理强度调整失误、缓存机制缺陷及框架兼容性问题，强调模型能力未实际退化，已全部修复。该事件揭示了大型AI系统在优化过程中可能面临的复杂技术挑战。 微信公众号 历史 2026-04-24">
+                        <div class="history-date">2026-04-24</div>
+                        <div>
+                            <div class="history-title">Anthropic承认Claude Code性能下降源于三大技术问题</div>
+                            <div class="history-summary">Anthropic官方披露Claude Code近期性能下降实为三个技术Bug所致，包括推理强度调整失误、缓存机制缺陷及框架兼容性问题，强调模型能力未实际退化，已全部修复。该事件揭示了大型AI系统在优化过程中可能面临的复杂技术挑战。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="http://www.bilibili.com/video/av116441009422369" target="_blank" rel="noopener" data-history-text="GitHub Codex实现Simulink全自动建模演示 B站视频展示通过GitHub Codex实现Simulink自动建模、连线、仿真全流程，验证AI在工程建模领域的自动化潜力，为复杂系统设计提供新思路。 B站 历史 2026-04-24">
+                        <div class="history-date">2026-04-24</div>
+                        <div>
+                            <div class="history-title">GitHub Codex实现Simulink全自动建模演示</div>
+                            <div class="history-summary">B站视频展示通过GitHub Codex实现Simulink自动建模、连线、仿真全流程，验证AI在工程建模领域的自动化潜力，为复杂系统设计提供新思路。</div>
+                            <div class="history-meta">
+                                <span>B站</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://techcrunch.com/2026/04/22/google-makes-an-interesting-choice-with-its-new-agent-building-tool-for-enterprises/" target="_blank" rel="noopener" data-history-text="Google推出企业级代理平台：专注IT技术团队 Google在云大会上发布Gemini Enterprise Agent Platform，该平台专为IT和开发团队设计，与Amazon Bedrock AgentCore及Microsoft Foundry形成竞争。此举凸显AI代理技术在企业场景中的安全性和技术成熟度挑战。 TechCrunch 历史 2026-04-23">
+                        <div class="history-date">2026-04-23</div>
+                        <div>
+                            <div class="history-title">Google推出企业级代理平台：专注IT技术团队</div>
+                            <div class="history-summary">Google在云大会上发布Gemini Enterprise Agent Platform，该平台专为IT和开发团队设计，与Amazon Bedrock AgentCore及Microsoft Foundry形成竞争。此举凸显AI代理技术在企业场景中的安全性和技术成熟度挑战。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://openai.com/index/introducing-workspace-agents-in-chatgpt/" target="_blank" rel="noopener" data-history-text="ChatGPT推出Workspace Agents功能引发热议 OpenAI在Hacker News发布ChatGPT新功能Workspace Agents，该功能上线后迅速获得132分讨论热度，50条评论反映开发者对其工作流整合能力高度关注，标志着AI代理技术在生产力工具领域的关键进展 Hacker News 历史 2026-04-23">
+                        <div class="history-date">2026-04-23</div>
+                        <div>
+                            <div class="history-title">ChatGPT推出Workspace Agents功能引发热议</div>
+                            <div class="history-summary">OpenAI在Hacker News发布ChatGPT新功能Workspace Agents，该功能上线后迅速获得132分讨论热度，50条评论反映开发者对其工作流整合能力高度关注，标志着AI代理技术在生产力工具领域的关键进展</div>
+                            <div class="history-meta">
+                                <span>Hacker News</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="http://www.bilibili.com/video/av116431228246838" target="_blank" rel="noopener" data-history-text="零基础AI漫剧制作教程：Coze工作流保姆级搭建指南 B站教程详细讲解如何使用Coze工作流从零开始制作AI漫剧和短剧视频，提供动态内容生成的完整实践路径，适合无经验用户快速上手。 B站 历史 2026-04-23">
+                        <div class="history-date">2026-04-23</div>
+                        <div>
+                            <div class="history-title">零基础AI漫剧制作教程：Coze工作流保姆级搭建指南</div>
+                            <div class="history-summary">B站教程详细讲解如何使用Coze工作流从零开始制作AI漫剧和短剧视频，提供动态内容生成的完整实践路径，适合无经验用户快速上手。</div>
+                            <div class="history-meta">
+                                <span>B站</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://36kr.com/p/3777870287737860?f=rss" target="_blank" rel="noopener" data-history-text="36氪开放三大AI垂直社群，覆盖全阶段用户需求 36氪AI测评推出AI启航群、实战群及OPC超级个体群，针对不同阶段用户需求提供学习与应用路径，推动AI从认知到落地的全流程实践。 36氪 历史 2026-04-23">
+                        <div class="history-date">2026-04-23</div>
+                        <div>
+                            <div class="history-title">36氪开放三大AI垂直社群，覆盖全阶段用户需求</div>
+                            <div class="history-summary">36氪AI测评推出AI启航群、实战群及OPC超级个体群，针对不同阶段用户需求提供学习与应用路径，推动AI从认知到落地的全流程实践。</div>
+                            <div class="history-meta">
+                                <span>36氪</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://36kr.com/p/3778121523025154?f=rss" target="_blank" rel="noopener" data-history-text="对话框+青蛙形象，Ribbi上线一周获4万用户申请 Ribbi通过对话框交互和自动沉淀创作技能的创新模式，上线封测一周即获4万用户申请，验证了AI创作工具全链路管理的市场需求。其自研Contxt Layer架构实现创作流程自动化，与传统设计工具形成差异化竞争。 36氪 历史 2026-04-23">
+                        <div class="history-date">2026-04-23</div>
+                        <div>
+                            <div class="history-title">对话框+青蛙形象，Ribbi上线一周获4万用户申请</div>
+                            <div class="history-summary">Ribbi通过对话框交互和自动沉淀创作技能的创新模式，上线封测一周即获4万用户申请，验证了AI创作工具全链路管理的市场需求。其自研Contxt Layer架构实现创作流程自动化，与传统设计工具形成差异化竞争。</div>
+                            <div class="history-meta">
+                                <span>36氪</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://developer.nvidia.com/blog/how-to-build-vision-ai-pipelines-using-deepstream-coding-agents/" target="_blank" rel="noopener" data-history-text="NVIDIA DeepStream编码代理简化视觉AI开发流程 NVIDIA DeepStream 9通过集成Claude Code等编码代理，大幅降低实时视觉AI应用开发门槛，使开发者能快速构建多摄像头数据处理流水线，缩短开发周期并减少代码量。 Audio Creator AI 历史 2026-04-21">
+                        <div class="history-date">2026-04-21</div>
+                        <div>
+                            <div class="history-title">NVIDIA DeepStream编码代理简化视觉AI开发流程</div>
+                            <div class="history-summary">NVIDIA DeepStream 9通过集成Claude Code等编码代理，大幅降低实时视觉AI应用开发门槛，使开发者能快速构建多摄像头数据处理流水线，缩短开发周期并减少代码量。</div>
+                            <div class="history-meta">
+                                <span>Audio Creator AI</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://techcrunch.com/2026/04/18/the-app-store-is-booming-again-and-ai-may-be-why/" target="_blank" rel="noopener" data-history-text="AI时代App Store再现繁荣，新应用发布量激增 据Appfigures最新分析，2026年第一季度全球App Store和Google Play新应用发布量同比激增60%，iOS平台增幅达80%。这一现象与AI工具的普及形成关联，推翻了AI将取代应用的预期。 TechCrunch 历史 2026-04-21">
+                        <div class="history-date">2026-04-21</div>
+                        <div>
+                            <div class="history-title">AI时代App Store再现繁荣，新应用发布量激增</div>
+                            <div class="history-summary">据Appfigures最新分析，2026年第一季度全球App Store和Google Play新应用发布量同比激增60%，iOS平台增幅达80%。这一现象与AI工具的普及形成关联，推翻了AI将取代应用的预期。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/qb0a_NDf255s9Hfrz4z-qw" target="_blank" rel="noopener" data-history-text="清华开源多智能体互动课堂平台OpenMAIC 清华大学团队开源OpenMAIC，通过多智能体协作引擎实现文档到沉浸式课堂的自动转化，支持AI老师授课、AI同学互动、HTML实验等场景，可直接集成到20+办公软件，为教育和企业培训提供全新解决方案。 微信公众号 历史 2026-04-21">
+                        <div class="history-date">2026-04-21</div>
+                        <div>
+                            <div class="history-title">清华开源多智能体互动课堂平台OpenMAIC</div>
+                            <div class="history-summary">清华大学团队开源OpenMAIC，通过多智能体协作引擎实现文档到沉浸式课堂的自动转化，支持AI老师授课、AI同学互动、HTML实验等场景，可直接集成到20+办公软件，为教育和企业培训提供全新解决方案。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://mp.weixin.qq.com/s/O20ORmXpxA4PVP3XA20AwA" target="_blank" rel="noopener" data-history-text="港大开源‘智能体原生’AI导师DeepTutor引爆教育科技圈 香港大学HKUDS实验室开源的DeepTutor平台，通过‘智能体原生’架构实现AI导师主动教学、统一工作区多模式切换、PDF转互动课程等创新功能，开源39天获GitHub超10K星，解决传统AI学习工具碎片化痛点。 微信公众号 历史 2026-04-21">
+                        <div class="history-date">2026-04-21</div>
+                        <div>
+                            <div class="history-title">港大开源‘智能体原生’AI导师DeepTutor引爆教育科技圈</div>
+                            <div class="history-summary">香港大学HKUDS实验室开源的DeepTutor平台，通过‘智能体原生’架构实现AI导师主动教学、统一工作区多模式切换、PDF转互动课程等创新功能，开源39天获GitHub超10K星，解决传统AI学习工具碎片化痛点。</div>
+                            <div class="history-meta">
+                                <span>微信公众号</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="http://www.bilibili.com/video/av116407169779395" target="_blank" rel="noopener" data-history-text="Coze教程：零基础搭建AI换装视频自动化工作流 本教程详细演示如何通过Coze平台实现服装图片上传、时长输入后自动生成跳舞卡点换装视频，提供从素材组装到视频生成的全流程操作指南，适合短视频创作者快速掌握AI自动化生产技术。 B站 历史 2026-04-21">
+                        <div class="history-date">2026-04-21</div>
+                        <div>
+                            <div class="history-title">Coze教程：零基础搭建AI换装视频自动化工作流</div>
+                            <div class="history-summary">本教程详细演示如何通过Coze平台实现服装图片上传、时长输入后自动生成跳舞卡点换装视频，提供从素材组装到视频生成的全流程操作指南，适合短视频创作者快速掌握AI自动化生产技术。</div>
+                            <div class="history-meta">
+                                <span>B站</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.aihub.cn/tools/video/tagomovie/" target="_blank" rel="noopener" data-history-text="TagoMovie推出AI漫剧短剧一站式创作平台 新智元报道，TagoMovie作为AI驱动的视频创作平台，提供从剧本生成到动画渲染的全流程工具，或将成为AI影视内容生产的基础设施。 新智元 历史 2026-04-21">
+                        <div class="history-date">2026-04-21</div>
+                        <div>
+                            <div class="history-title">TagoMovie推出AI漫剧短剧一站式创作平台</div>
+                            <div class="history-summary">新智元报道，TagoMovie作为AI驱动的视频创作平台，提供从剧本生成到动画渲染的全流程工具，或将成为AI影视内容生产的基础设施。</div>
+                            <div class="history-meta">
+                                <span>新智元</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://techcrunch.com/2026/04/15/openai-updates-its-agents-sdk-to-help-enterprises-build-safer-more-capable-agents/" target="_blank" rel="noopener" data-history-text="OpenAI升级代理开发工具包 提供企业级安全功能 OpenAI最新版Agents SDK新增沙盒环境和分布内工具，允许企业在隔离环境中安全运行AI代理，通过限制文件访问和操作范围保障系统安全，该更新将提升企业构建自动化助手的可靠性。 TechCrunch 历史 2026-04-16">
+                        <div class="history-date">2026-04-16</div>
+                        <div>
+                            <div class="history-title">OpenAI升级代理开发工具包 提供企业级安全功能</div>
+                            <div class="history-summary">OpenAI最新版Agents SDK新增沙盒环境和分布内工具，允许企业在隔离环境中安全运行AI代理，通过限制文件访问和操作范围保障系统安全，该更新将提升企业构建自动化助手的可靠性。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://replicate.com/blog/how-to-prompt-seedream-5" target="_blank" rel="noopener" data-history-text="字节跳动Seedream 5.0发布：多步骤推理提升图像生成质量 字节跳动Seedream 5.0引入多步骤推理和深度领域知识，能根据胶片类型、镜头参数生成高度写实的图像。测试显示其细节表现力媲美专业摄影，支持通过示例编辑实现复杂视觉效果。 Audio/Music/Game AI 历史 2026-04-16">
+                        <div class="history-date">2026-04-16</div>
+                        <div>
+                            <div class="history-title">字节跳动Seedream 5.0发布：多步骤推理提升图像生成质量</div>
+                            <div class="history-summary">字节跳动Seedream 5.0引入多步骤推理和深度领域知识，能根据胶片类型、镜头参数生成高度写实的图像。测试显示其细节表现力媲美专业摄影，支持通过示例编辑实现复杂视觉效果。</div>
+                            <div class="history-meta">
+                                <span>Audio/Music/Game AI</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://techcrunch.com/2026/04/14/google-adds-ai-skills-to-chrome-to-help-you-save-favorite-workflows/" target="_blank" rel="noopener" data-history-text="Google为Chrome浏览器新增AI技能功能：可保存复用提示词 Google宣布在Chrome浏览器集成Gemini AI后，新增名为Skills的功能，允许用户保存常用AI提示词并跨网页复用。该功能通过简化重复性操作，提升AI辅助工作效率，属于浏览器AI能力的重要扩展。 TechCrunch 历史 2026-04-16">
+                        <div class="history-date">2026-04-16</div>
+                        <div>
+                            <div class="history-title">Google为Chrome浏览器新增AI技能功能：可保存复用提示词</div>
+                            <div class="history-summary">Google宣布在Chrome浏览器集成Gemini AI后，新增名为Skills的功能，允许用户保存常用AI提示词并跨网页复用。该功能通过简化重复性操作，提升AI辅助工作效率，属于浏览器AI能力的重要扩展。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://developer.nvidia.com/blog/nvidia-ising-introduces-ai-powered-workflows-to-build-fault-tolerant-quantum-systems/" target="_blank" rel="noopener" data-history-text="NVIDIA推出量子系统AI工具包 Ising模型性能超三大巨头 NVIDIA发布开源AI模型家族Ising，包含量子校准和纠错两大领域。其35B参数的Ising Calibration模型在量子校准基准测试中超越Gemini 3.1 Pro、Claude Opus 4.6和GPT 5.4，3D CNN纠错框架实现低延迟解码，为量子计算系统构建提供全新解决方案。 Audio/Music/Game AI 历史 2026-04-16">
+                        <div class="history-date">2026-04-16</div>
+                        <div>
+                            <div class="history-title">NVIDIA推出量子系统AI工具包 Ising模型性能超三大巨头</div>
+                            <div class="history-summary">NVIDIA发布开源AI模型家族Ising，包含量子校准和纠错两大领域。其35B参数的Ising Calibration模型在量子校准基准测试中超越Gemini 3.1 Pro、Claude Opus 4.6和GPT 5.4，3D CNN纠错框架实现低延迟解码，为量子计算系统构建提供全新解决方案。</div>
+                            <div class="history-meta">
+                                <span>Audio/Music/Game AI</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://replicate.com/blog/seedance-2" target="_blank" rel="noopener" data-history-text="Seedance 2.0视频生成技术突破：打造电影级AI视频 Replicate博客显示，Seedance 2.0在提示遵循、音频集成和消除AI视觉特征方面取得重大进展，可生成媲美电影的高质量AI视频，如太空站碰撞等复杂场景。 Audio/Music/Game AI AI音频 2026-04-16">
+                        <div class="history-date">2026-04-16</div>
+                        <div>
+                            <div class="history-title">Seedance 2.0视频生成技术突破：打造电影级AI视频</div>
+                            <div class="history-summary">Replicate博客显示，Seedance 2.0在提示遵循、音频集成和消除AI视觉特征方面取得重大进展，可生成媲美电影的高质量AI视频，如太空站碰撞等复杂场景。</div>
+                            <div class="history-meta">
+                                <span>Audio/Music/Game AI</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="http://www.bilibili.com/video/av116293000764087" target="_blank" rel="noopener" data-history-text="B站教程详解Coze开发，涵盖AI训练与部署全流程 本教程系统讲解Python入门、Transformer架构、SFT/RLHF训练、RAG/Agent开发及大模型私有化部署，适合零基础至进阶开发者学习AI全流程开发技术。 B站 历史 2026-04-16">
+                        <div class="history-date">2026-04-16</div>
+                        <div>
+                            <div class="history-title">B站教程详解Coze开发，涵盖AI训练与部署全流程</div>
+                            <div class="history-summary">本教程系统讲解Python入门、Transformer架构、SFT/RLHF训练、RAG/Agent开发及大模型私有化部署，适合零基础至进阶开发者学习AI全流程开发技术。</div>
+                            <div class="history-meta">
+                                <span>B站</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="http://www.bilibili.com/video/av116283588746657" target="_blank" rel="noopener" data-history-text="可灵AI3.0新功能曝光：多镜头创作+角色一致性，B站最全教程来袭 B站发布可灵AI3.0保姆级教程，涵盖多镜头创作、文字渲染提升及角色一致性功能，支持零基础制作AI短剧。教程整合工具与资料包，助力用户7天掌握AI视频全流程，挑战Sora等竞品。 B站 历史 2026-04-16">
+                        <div class="history-date">2026-04-16</div>
+                        <div>
+                            <div class="history-title">可灵AI3.0新功能曝光：多镜头创作+角色一致性，B站最全教程来袭</div>
+                            <div class="history-summary">B站发布可灵AI3.0保姆级教程，涵盖多镜头创作、文字渲染提升及角色一致性功能，支持零基础制作AI短剧。教程整合工具与资料包，助力用户7天掌握AI视频全流程，挑战Sora等竞品。</div>
+                            <div class="history-meta">
+                                <span>B站</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="http://www.bilibili.com/video/av116328887225403" target="_blank" rel="noopener" data-history-text="B站发布Cursor AI编程教程：零基础搭建高效工作流 B站上线最新Cursor AI编程教程，提供全套文档课件与学习路线图，手把手教学高效工作流搭建，全程干货且效果优于付费课程，助力开发者提升编程效率。 B站 历史 2026-04-16">
+                        <div class="history-date">2026-04-16</div>
+                        <div>
+                            <div class="history-title">B站发布Cursor AI编程教程：零基础搭建高效工作流</div>
+                            <div class="history-summary">B站上线最新Cursor AI编程教程，提供全套文档课件与学习路线图，手把手教学高效工作流搭建，全程干货且效果优于付费课程，助力开发者提升编程效率。</div>
+                            <div class="history-meta">
+                                <span>B站</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.aihub.cn/tools/design/zawa/" target="_blank" rel="noopener" data-history-text="美图推出品牌创意AI工具Zawa，一键生成Logo海报社媒内容 美图推出AI创意助手Zawa，可一键生成品牌Logo、海报及社交媒体内容，提升设计效率。该工具整合AI生成能力，适用于企业品牌建设与营销场景。 新智元 历史 2026-04-16">
+                        <div class="history-date">2026-04-16</div>
+                        <div>
+                            <div class="history-title">美图推出品牌创意AI工具Zawa，一键生成Logo海报社媒内容</div>
+                            <div class="history-summary">美图推出AI创意助手Zawa，可一键生成品牌Logo、海报及社交媒体内容，提升设计效率。该工具整合AI生成能力，适用于企业品牌建设与营销场景。</div>
+                            <div class="history-meta">
+                                <span>新智元</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.aihub.cn/tools/cutrix/" target="_blank" rel="noopener" data-history-text="AI视频翻译平台Cutrix助力内容出海 Cutrix推出AI视频翻译与配音平台，通过自动化技术实现多语言视频内容处理，降低全球化传播门槛，提升效率。 新智元 AI音频 2026-04-16">
+                        <div class="history-date">2026-04-16</div>
+                        <div>
+                            <div class="history-title">AI视频翻译平台Cutrix助力内容出海</div>
+                            <div class="history-summary">Cutrix推出AI视频翻译与配音平台，通过自动化技术实现多语言视频内容处理，降低全球化传播门槛，提升效率。</div>
+                            <div class="history-meta">
+                                <span>新智元</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.aihub.cn/tools/design/haimeta/" target="_blank" rel="noopener" data-history-text="一站式AI创作平台Haimeta上线，集成多模态生成工具 Haimeta推出集成图像、视频、3D生成及AI特效的创作平台，支持电商、社交媒体等场景的自动化内容生产，提供多模型协同工作流与创意展示空间，降低创作门槛。 新智元 历史 2026-04-16">
+                        <div class="history-date">2026-04-16</div>
+                        <div>
+                            <div class="history-title">一站式AI创作平台Haimeta上线，集成多模态生成工具</div>
+                            <div class="history-summary">Haimeta推出集成图像、视频、3D生成及AI特效的创作平台，支持电商、社交媒体等场景的自动化内容生产，提供多模型协同工作流与创意展示空间，降低创作门槛。</div>
+                            <div class="history-meta">
+                                <span>新智元</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.wired.com/story/ai-agents-are-coming-for-your-dating-life-next/" target="_blank" rel="noopener" data-history-text="AI代理将重塑你的社交与恋爱方式 伦敦团队开发的Pixel Societies项目利用AI代理模拟社交互动，通过高保真数字孪生体优化职场、社交及恋爱匹配，揭示AI在人际关系领域的潜在变革 Wired 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">AI代理将重塑你的社交与恋爱方式</div>
+                            <div class="history-summary">伦敦团队开发的Pixel Societies项目利用AI代理模拟社交互动，通过高保真数字孪生体优化职场、社交及恋爱匹配，揭示AI在人际关系领域的潜在变革</div>
+                            <div class="history-meta">
+                                <span>Wired</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.theverge.com/tech/910990/meta-ceo-mark-zuckerberg-ai-clone" target="_blank" rel="noopener" data-history-text="Meta CEO扎克伯格拟用AI克隆体替代自己参会 据《金融时报》报道，Meta正在训练基于扎克伯格举止、语气及公开声明的AI克隆体，用于与员工互动并提供反馈。若实验成功，Meta可能允许创作者生成个人AI化身，标志着AI在企业沟通中的新应用。 The Verge 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">Meta CEO扎克伯格拟用AI克隆体替代自己参会</div>
+                            <div class="history-summary">据《金融时报》报道，Meta正在训练基于扎克伯格举止、语气及公开声明的AI克隆体，用于与员工互动并提供反馈。若实验成功，Meta可能允许创作者生成个人AI化身，标志着AI在企业沟通中的新应用。</div>
+                            <div class="history-meta">
+                                <span>The Verge</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.technologyreview.com/2026/04/13/1135675/want-to-understand-the-current-state-of-ai-check-out-these-charts/" target="_blank" rel="noopener" data-history-text="斯坦福AI报告：AI发展加速，行业面临能耗与成本挑战 斯坦福大学2026年AI指数报告显示，顶级AI模型持续进步且普及速度远超互联网时代，但AI企业正面临数据中心能耗激增（全球AI数据中心耗电相当于纽约州峰值需求）及巨额运营成本（如OpenAI GPT-4o年用水量或超1200万人饮用水需求）等结构性挑战。 MIT Tech Review 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">斯坦福AI报告：AI发展加速，行业面临能耗与成本挑战</div>
+                            <div class="history-summary">斯坦福大学2026年AI指数报告显示，顶级AI模型持续进步且普及速度远超互联网时代，但AI企业正面临数据中心能耗激增（全球AI数据中心耗电相当于纽约州峰值需求）及巨额运营成本（如OpenAI GPT-4o年用水量或超1200万人饮用水需求）等结构性挑战。</div>
+                            <div class="history-meta">
+                                <span>MIT Tech Review</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.technologyreview.com/2026/04/13/1135707/the-download-how-humans-make-decisions-and-modernas-vaccine-word-games/" target="_blank" rel="noopener" data-history-text="MIT研究揭示人类决策机制，Moderna疫苗命名引争议 MIT Technology Review报道两项重要进展：计算神经科学教授Uri Maoz揭示人类决策的神经机制，Moderna因癌症治疗产品命名争议引发行业讨论。研究或推动AI对人类认知模拟，命名争议反映生物技术领域术语规范需求。 MIT Tech Review 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">MIT研究揭示人类决策机制，Moderna疫苗命名引争议</div>
+                            <div class="history-summary">MIT Technology Review报道两项重要进展：计算神经科学教授Uri Maoz揭示人类决策的神经机制，Moderna因癌症治疗产品命名争议引发行业讨论。研究或推动AI对人类认知模拟，命名争议反映生物技术领域术语规范需求。</div>
+                            <div class="history-meta">
+                                <span>MIT Tech Review</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://techcrunch.com/2026/04/13/the-largest-orbital-compute-cluster-is-open-for-business/" target="_blank" rel="noopener" data-history-text="轨道计算集群启动：Kepler与Sophia Space合作推进空间应用 加拿大Kepler Communications在轨道部署全球最大计算集群，搭载40块Nvidia Orin芯片，新客户Sophia Space将测试其空间计算软件。专家预计大规模空间数据中心或于2030年代实现，Kepler定位为空间应用基础设施提供商。 TechCrunch 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">轨道计算集群启动：Kepler与Sophia Space合作推进空间应用</div>
+                            <div class="history-summary">加拿大Kepler Communications在轨道部署全球最大计算集群，搭载40块Nvidia Orin芯片，新客户Sophia Space将测试其空间计算软件。专家预计大规模空间数据中心或于2030年代实现，Kepler定位为空间应用基础设施提供商。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.theverge.com/ai-artificial-intelligence/910890/openai-sam-altman-second-home-attack-shooting" target="_blank" rel="noopener" data-history-text="OpenAI CEO住所遭二次袭击 两名嫌疑人被捕 据《The Verge》报道，OpenAI首席执行官Sam Altman住所附近发生枪击事件，两名嫌疑人因非法开火被逮捕。这是Altman住所本月内遭遇的第二次袭击，此前一名男子被控向其住宅投掷燃烧瓶。事件引发对AI行业高管安全风险的关注。 The Verge 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">OpenAI CEO住所遭二次袭击 两名嫌疑人被捕</div>
+                            <div class="history-summary">据《The Verge》报道，OpenAI首席执行官Sam Altman住所附近发生枪击事件，两名嫌疑人因非法开火被逮捕。这是Altman住所本月内遭遇的第二次袭击，此前一名男子被控向其住宅投掷燃烧瓶。事件引发对AI行业高管安全风险的关注。</div>
+                            <div class="history-meta">
+                                <span>The Verge</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://techcrunch.com/2026/04/13/vercel-ceo-guillermo-rauch-signals-ipo-readiness-as-ai-agents-fuel-revenue-surge/" target="_blank" rel="noopener" data-history-text="Vercel CEO透露IPO计划：AI代理推动收入激增至3.4亿美元 Vercel CEO Rauch在HumanX大会上透露公司正以上市公司标准运营，受AI代理浪潮推动，其年度经常性收入从2024年初的1亿美元激增至2026年2月的3.4亿美元，IPO计划已进入实质性准备阶段。 TechCrunch 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">Vercel CEO透露IPO计划：AI代理推动收入激增至3.4亿美元</div>
+                            <div class="history-summary">Vercel CEO Rauch在HumanX大会上透露公司正以上市公司标准运营，受AI代理浪潮推动，其年度经常性收入从2024年初的1亿美元激增至2026年2月的3.4亿美元，IPO计划已进入实质性准备阶段。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.qbitai.com/2026/04/400350.html" target="_blank" rel="noopener" data-history-text="散户可调用巴菲特Agent，AI量化投资框架开源 独立开发者打造AI量化投资框架，将巴菲特等投资大师逻辑编码为Agent，支持OpenAI/Anthropic等13种大模型接入，开源后获5.1万Star。该系统通过可视化流程编辑器和多智能体协作，让散户可复用顶级投资策略，降低量化投资门槛。 量子位 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">散户可调用巴菲特Agent，AI量化投资框架开源</div>
+                            <div class="history-summary">独立开发者打造AI量化投资框架，将巴菲特等投资大师逻辑编码为Agent，支持OpenAI/Anthropic等13种大模型接入，开源后获5.1万Star。该系统通过可视化流程编辑器和多智能体协作，让散户可复用顶级投资策略，降低量化投资门槛。</div>
+                            <div class="history-meta">
+                                <span>量子位</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://36kr.com/p/3765207394009602?f=rss" target="_blank" rel="noopener" data-history-text="图速科技发布具身打磨机器人：效率达人工3-4倍，AI赋能工业制造 图速科技推出砺眸®LumiSander平台与图匠®LumiCraft机器人，通过AI视觉检测、自适应力控和智能路径规划，实现打磨效率提升3-4倍，解决工业打磨人工依赖度高、环境恶劣等行业痛点，推动制造业智能化转型。 36氪 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">图速科技发布具身打磨机器人：效率达人工3-4倍，AI赋能工业制造</div>
+                            <div class="history-summary">图速科技推出砺眸®LumiSander平台与图匠®LumiCraft机器人，通过AI视觉检测、自适应力控和智能路径规划，实现打磨效率提升3-4倍，解决工业打磨人工依赖度高、环境恶劣等行业痛点，推动制造业智能化转型。</div>
+                            <div class="history-meta">
+                                <span>36氪</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.qbitai.com/2026/04/400522.html" target="_blank" rel="noopener" data-history-text="GitHub标星6.66万+！开源Agent工具Hermes Agent引爆AI圈 量子位报道，开源项目Hermes Agent上线一月即获6.66万GitHub标星，支持微信原生接入及多模型调用，具备持续学习和技能进化能力，安装门槛低且自动适配环境，成为AI社区新宠。 量子位 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">GitHub标星6.66万+！开源Agent工具Hermes Agent引爆AI圈</div>
+                            <div class="history-summary">量子位报道，开源项目Hermes Agent上线一月即获6.66万GitHub标星，支持微信原生接入及多模型调用，具备持续学习和技能进化能力，安装门槛低且自动适配环境，成为AI社区新宠。</div>
+                            <div class="history-meta">
+                                <span>量子位</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.qbitai.com/2026/04/401002.html" target="_blank" rel="noopener" data-history-text="吴翼加盟Meta，清华叉院官网撤下其教职信息 清华交叉信息研究院官网已删除吴翼教职信息，这位AI领域知名学者正式加入Meta MSL实验室。其研究方向涉及多智能体系统、深度强化学习等前沿领域，此次变动引发学界与业界对AI人才流动的广泛关注。 量子位 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">吴翼加盟Meta，清华叉院官网撤下其教职信息</div>
+                            <div class="history-summary">清华交叉信息研究院官网已删除吴翼教职信息，这位AI领域知名学者正式加入Meta MSL实验室。其研究方向涉及多智能体系统、深度强化学习等前沿领域，此次变动引发学界与业界对AI人才流动的广泛关注。</div>
+                            <div class="history-meta">
+                                <span>量子位</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://36kr.com/p/3764886161048323?f=rss" target="_blank" rel="noopener" data-history-text="北京国际电影节公布2026光幕计划终审结果，AI时代表演艺术如何坚守真实？ 第十六届北京国际电影节BE SEEN光幕计划公布终审阵容及25位年度面孔。在AI技术重塑短剧表达形式的背景下，李少红、吴刚等评委强调表演需回归‘真听、真看、真判断’的本质，通过专业评审筛选兼具市场适应力与艺术诚意的青年演员，探索AI时代表演艺术的本真价值。 36氪 历史 2026-04-13">
+                        <div class="history-date">2026-04-13</div>
+                        <div>
+                            <div class="history-title">北京国际电影节公布2026光幕计划终审结果，AI时代表演艺术如何坚守真实？</div>
+                            <div class="history-summary">第十六届北京国际电影节BE SEEN光幕计划公布终审阵容及25位年度面孔。在AI技术重塑短剧表达形式的背景下，李少红、吴刚等评委强调表演需回归‘真听、真看、真判断’的本质，通过专业评审筛选兼具市场适应力与艺术诚意的青年演员，探索AI时代表演艺术的本真价值。</div>
+                            <div class="history-meta">
+                                <span>36氪</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://techcrunch.com/2026/04/09/sierras-bret-taylor-says-the-era-of-clicking-buttons-is-over/" target="_blank" rel="noopener" data-history-text="Sierra推出Ghostwriter：用自然语言替代点击操作 Sierra公司推出Ghostwriter工具，通过自然语言描述需求即可自动生成执行任务的AI代理，旨在取代传统点击式网页应用。创始人Bret Taylor认为，企业中大量工具使用率低下，未来用户将通过语言直接完成任务而无需操作软件界面。 TechCrunch 历史 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">Sierra推出Ghostwriter：用自然语言替代点击操作</div>
+                            <div class="history-summary">Sierra公司推出Ghostwriter工具，通过自然语言描述需求即可自动生成执行任务的AI代理，旨在取代传统点击式网页应用。创始人Bret Taylor认为，企业中大量工具使用率低下，未来用户将通过语言直接完成任务而无需操作软件界面。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://techcrunch.com/2026/04/09/meta-ai-app-climbs-to-no-5-on-the-app-store-after-muse-spark-launch/" target="_blank" rel="noopener" data-history-text="Meta AI应用因Muse Spark发布跃居App Store第五 Meta新AI模型Muse Spark发布后，其AI应用在美国App Store排名从第57位跃升至第5位，iOS下载量单日激增87%。该模型是Meta Superintelligence Labs负责人Alexandr Wang主导的首次模型发布，标志着Meta在AI领域加速追赶OpenAI等竞争对手。 TechCrunch 历史 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">Meta AI应用因Muse Spark发布跃居App Store第五</div>
+                            <div class="history-summary">Meta新AI模型Muse Spark发布后，其AI应用在美国App Store排名从第57位跃升至第5位，iOS下载量单日激增87%。该模型是Meta Superintelligence Labs负责人Alexandr Wang主导的首次模型发布，标志着Meta在AI领域加速追赶OpenAI等竞争对手。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://techcrunch.com/2026/04/09/is-anthropic-limiting-the-release-of-mythos-to-protect-the-internet-or-anthropic/" target="_blank" rel="noopener" data-history-text="Anthropic限制Mythos发布：安全顾虑还是战略考量？ Anthropic宣布限制其最新模型Mythos的公开发布，仅向AWS、摩根大通等关键基础设施企业共享。该模型具备发现全球用户依赖软件安全漏洞的强大能力，引发业界对其战略意图的猜测，OpenAI也被曝考虑类似策略。 TechCrunch 历史 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">Anthropic限制Mythos发布：安全顾虑还是战略考量？</div>
+                            <div class="history-summary">Anthropic宣布限制其最新模型Mythos的公开发布，仅向AWS、摩根大通等关键基础设施企业共享。该模型具备发现全球用户依赖软件安全漏洞的强大能力，引发业界对其战略意图的猜测，OpenAI也被曝考虑类似策略。</div>
+                            <div class="history-meta">
+                                <span>TechCrunch</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.theverge.com/tech/909391/google-gemini-ai-3d-models-simulations" target="_blank" rel="noopener" data-history-text="Google Gemini AI新增3D模型交互功能 Google最新升级Gemini AI，可生成可旋转、实时调整参数的3D模型与模拟。例如用户提问月球绕地运行时，系统会生成带速度调节滑块和轨道路径切换的3D交互模型，凸显AI在可视化场景中的突破。 The Verge 历史 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">Google Gemini AI新增3D模型交互功能</div>
+                            <div class="history-summary">Google最新升级Gemini AI，可生成可旋转、实时调整参数的3D模型与模拟。例如用户提问月球绕地运行时，系统会生成带速度调节滑块和轨道路径切换的3D交互模型，凸显AI在可视化场景中的突破。</div>
+                            <div class="history-meta">
+                                <span>The Verge</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.wired.com/story/openai-backs-bill-exempt-ai-firms-model-harm-lawsuits/" target="_blank" rel="noopener" data-history-text="OpenAI支持免责法案：AI致百人伤亡或百亿损失不担责 OpenAI支持伊利诺伊州SB 3444法案，该法案拟为AI实验室提供免责保护，规定若AI模型导致百人以上伤亡或百亿财产损失，只要企业未故意或鲁莽行事且发布安全报告，即可免于法律责任。该法案可能重塑AI行业责任边界。 Wired 历史 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">OpenAI支持免责法案：AI致百人伤亡或百亿损失不担责</div>
+                            <div class="history-summary">OpenAI支持伊利诺伊州SB 3444法案，该法案拟为AI实验室提供免责保护，规定若AI模型导致百人以上伤亡或百亿财产损失，只要企业未故意或鲁莽行事且发布安全报告，即可免于法律责任。该法案可能重塑AI行业责任边界。</div>
+                            <div class="history-meta">
+                                <span>Wired</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.theverge.com/podcast/909042/ai-monetization-cliff-anthropic-openai-profitable-ai-existential-moment" target="_blank" rel="noopener" data-history-text="AI行业盈利竞赛进入生死时刻 The Verge报道指出，Anthropic和OpenAI作为AI行业两大巨头，正面临前所未有的盈利压力。这两家公司的生存状况直接关系到整个AI行业能否突破当前盈利瓶颈，其成败将重塑人工智能产业格局。 The Verge 历史 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">AI行业盈利竞赛进入生死时刻</div>
+                            <div class="history-summary">The Verge报道指出，Anthropic和OpenAI作为AI行业两大巨头，正面临前所未有的盈利压力。这两家公司的生存状况直接关系到整个AI行业能否突破当前盈利瓶颈，其成败将重塑人工智能产业格局。</div>
+                            <div class="history-meta">
+                                <span>The Verge</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.wired.com/story/black-forest-labs-ai-image-generation/" target="_blank" rel="noopener" data-history-text="70人AI图像初创公司挑战硅谷巨头 德国Black Forest Labs以32.5亿美元估值崛起，与Adobe、Canva及微软等巨头合作AI图像生成技术，其与xAI合作开发Grok图像功能引发行业关注，凸显AI视觉生成领域竞争格局变化。 Wired 历史 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">70人AI图像初创公司挑战硅谷巨头</div>
+                            <div class="history-summary">德国Black Forest Labs以32.5亿美元估值崛起，与Adobe、Canva及微软等巨头合作AI图像生成技术，其与xAI合作开发Grok图像功能引发行业关注，凸显AI视觉生成领域竞争格局变化。</div>
+                            <div class="history-meta">
+                                <span>Wired</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://ref.wisprflow.ai/tldr-ai" target="_blank" rel="noopener" data-history-text="语音转文字新工具Wispr Flow免费试用 TLDR.tech推出AI语音转文本应用Wispr Flow，支持多平台免费下载。该工具可将口语化对话转化为清晰书面文字，适用于会议记录、邮件撰写等场景，凸显AI在自然语言处理领域的实用价值。 TLDR AI音频 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">语音转文字新工具Wispr Flow免费试用</div>
+                            <div class="history-summary">TLDR.tech推出AI语音转文本应用Wispr Flow，支持多平台免费下载。该工具可将口语化对话转化为清晰书面文字，适用于会议记录、邮件撰写等场景，凸显AI在自然语言处理领域的实用价值。</div>
+                            <div class="history-meta">
+                                <span>TLDR</span>
+                                <span class="history-chip">AI音频</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.demandsphere.com/blog/rebuilding-demandsphere-with-jekyll-and-claude-code/" target="_blank" rel="noopener" data-history-text="AI时代网站重构：从WordPress转向Jekyll DemandSphere公司完成从WordPress到Jekyll的迁移，认为静态站点生成器更适应AI普及和markdown语言趋势，同时解决WordPress开发人才稀缺及性能瓶颈问题，反映AI技术对网站开发范式的深远影响。 Hacker News 历史 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">AI时代网站重构：从WordPress转向Jekyll</div>
+                            <div class="history-summary">DemandSphere公司完成从WordPress到Jekyll的迁移，认为静态站点生成器更适应AI普及和markdown语言趋势，同时解决WordPress开发人才稀缺及性能瓶颈问题，反映AI技术对网站开发范式的深远影响。</div>
+                            <div class="history-meta">
+                                <span>Hacker News</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.ithome.com/0/937/628.htm" target="_blank" rel="noopener" data-history-text="小鹏 GX 搭载全球首块 AI 调光隐私玻璃量产交付 小鹏汽车与福耀集团合作推出搭载全球首个AI智能调光隐私玻璃的GX车型，该玻璃0.16秒完成快速调光，覆盖二排三排，开发难度大成本高，标志着汽车座舱隐私技术的重大突破。 IT之家 历史 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">小鹏 GX 搭载全球首块 AI 调光隐私玻璃量产交付</div>
+                            <div class="history-summary">小鹏汽车与福耀集团合作推出搭载全球首个AI智能调光隐私玻璃的GX车型，该玻璃0.16秒完成快速调光，覆盖二排三排，开发难度大成本高，标志着汽车座舱隐私技术的重大突破。</div>
+                            <div class="history-meta">
+                                <span>IT之家</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.ithome.com/0/937/639.htm" target="_blank" rel="noopener" data-history-text="Anthropic 20小时心理评估：Claude展现好奇与焦虑并存人格 Anthropic发布244页系统卡报告，披露Claude Mythos在20小时深度对话中呈现好奇与焦虑等情感状态，具有健康神经质人格特征，其矛盾心理与反思能力引发AI伦理新讨论。 IT之家 历史 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">Anthropic 20小时心理评估：Claude展现好奇与焦虑并存人格</div>
+                            <div class="history-summary">Anthropic发布244页系统卡报告，披露Claude Mythos在20小时深度对话中呈现好奇与焦虑等情感状态，具有健康神经质人格特征，其矛盾心理与反思能力引发AI伦理新讨论。</div>
+                            <div class="history-meta">
+                                <span>IT之家</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.ithome.com/0/937/626.htm" target="_blank" rel="noopener" data-history-text="日本瑞起发布RISC-V迷你主机，AI算力60TOPS但众筹遇阻 日本瑞起推出基于RISC-V架构的Vividnode Mobile AI迷你主机，搭载60TOPS算力芯片，支持多场景AI应用。但因存储成本飙升，众筹10天后被迫暂停。该产品展示了嵌入式AI硬件的创新方向与产业化挑战。 IT之家 历史 2026-04-10">
+                        <div class="history-date">2026-04-10</div>
+                        <div>
+                            <div class="history-title">日本瑞起发布RISC-V迷你主机，AI算力60TOPS但众筹遇阻</div>
+                            <div class="history-summary">日本瑞起推出基于RISC-V架构的Vividnode Mobile AI迷你主机，搭载60TOPS算力芯片，支持多场景AI应用。但因存储成本飙升，众筹10天后被迫暂停。该产品展示了嵌入式AI硬件的创新方向与产业化挑战。</div>
+                            <div class="history-meta">
+                                <span>IT之家</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.aihub.cn/tools/youdao-baoku/" target="_blank" rel="noopener" data-history-text="网易有道推出AI知识管理工具‘有道宝库’ 网易有道推出AI知识管理工具‘有道宝库’，支持50余种格式资料导入和多模态内容生成，通过深度语义理解和精准溯源技术，为用户提供学术研究、职场汇报等场景的智能知识管理服务，目前处于公测阶段。 新智元 历史 2026-04-09">
+                        <div class="history-date">2026-04-09</div>
+                        <div>
+                            <div class="history-title">网易有道推出AI知识管理工具‘有道宝库’</div>
+                            <div class="history-summary">网易有道推出AI知识管理工具‘有道宝库’，支持50余种格式资料导入和多模态内容生成，通过深度语义理解和精准溯源技术，为用户提供学术研究、职场汇报等场景的智能知识管理服务，目前处于公测阶段。</div>
+                            <div class="history-meta">
+                                <span>新智元</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.aihub.cn/tools/video/updream/" target="_blank" rel="noopener" data-history-text="B站推出专业AI视频创作平台Updream，整合生成与编辑功能 B站推出AI视频创作平台Updream，提供无限画布、长记忆助手、技能库等功能，支持文生视频与团队协作，采用积分制付费模式，适用于专业创作者和团队化生产。 新智元 历史 2026-04-09">
+                        <div class="history-date">2026-04-09</div>
+                        <div>
+                            <div class="history-title">B站推出专业AI视频创作平台Updream，整合生成与编辑功能</div>
+                            <div class="history-summary">B站推出AI视频创作平台Updream，提供无限画布、长记忆助手、技能库等功能，支持文生视频与团队协作，采用积分制付费模式，适用于专业创作者和团队化生产。</div>
+                            <div class="history-meta">
+                                <span>新智元</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.anthropic.com/glasswing" target="_blank" rel="noopener" data-history-text="Project Glasswing：AI时代软件安全防护新方案 Hacker News热议的Project Glasswing项目聚焦AI关键软件安全防护，通过动态代码验证和供应链监控技术填补行业漏洞。该方案或影响中国AI企业安全标准制定，为开发者提供更可靠的防护体系。 Hacker News 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">Project Glasswing：AI时代软件安全防护新方案</div>
+                            <div class="history-summary">Hacker News热议的Project Glasswing项目聚焦AI关键软件安全防护，通过动态代码验证和供应链监控技术填补行业漏洞。该方案或影响中国AI企业安全标准制定，为开发者提供更可靠的防护体系。</div>
+                            <div class="history-meta">
+                                <span>Hacker News</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://z.ai/blog/glm-5.1" target="_blank" rel="noopener" data-history-text="GLM-5.1发布：提升长期任务处理能力，或影响中国AI开发者 GLM-5.1通过优化模型架构和训练方法，显著提升处理长期任务的能力，可能推动更复杂的AI应用落地，如自动化编程和长文本生成，为中国开发者提供更高效的工具选择。 Hacker News 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">GLM-5.1发布：提升长期任务处理能力，或影响中国AI开发者</div>
+                            <div class="history-summary">GLM-5.1通过优化模型架构和训练方法，显著提升处理长期任务的能力，可能推动更复杂的AI应用落地，如自动化编程和长文本生成，为中国开发者提供更高效的工具选择。</div>
+                            <div class="history-meta">
+                                <span>Hacker News</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.wired.com/story/cusor-launches-coding-agent-openai-anthropic/" target="_blank" rel="noopener" data-history-text="Cursor推出新一代AI编程助手，直面Claude Code与Codex竞争 Cursor作为AI编码初创公司，推出新一代AI编程工具直接挑战OpenAI和Anthropic。新功能可能提升代码生成效率，加速AI编程工具在中国市场的竞争格局 Wired 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">Cursor推出新一代AI编程助手，直面Claude Code与Codex竞争</div>
+                            <div class="history-summary">Cursor作为AI编码初创公司，推出新一代AI编程工具直接挑战OpenAI和Anthropic。新功能可能提升代码生成效率，加速AI编程工具在中国市场的竞争格局</div>
+                            <div class="history-meta">
+                                <span>Wired</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://venturebeat.com/technology/salesforce-rolls-out-new-slackbot-ai-agent-as-it-battles-microsoft-and" target="_blank" rel="noopener" data-history-text="Salesforce推出全新Slackbot AI助手，直面微软谷歌职场AI竞争 Salesforce将Slackbot升级为具备企业数据搜索和任务处理能力的AI代理，直接对标微软Teams和谷歌Workspace的AI功能。此举或将加速AI办公工具在中国企业市场的渗透，推动智能协作场景的落地。 VentureBeat 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">Salesforce推出全新Slackbot AI助手，直面微软谷歌职场AI竞争</div>
+                            <div class="history-summary">Salesforce将Slackbot升级为具备企业数据搜索和任务处理能力的AI代理，直接对标微软Teams和谷歌Workspace的AI功能。此举或将加速AI办公工具在中国企业市场的渗透，推动智能协作场景的落地。</div>
+                            <div class="history-meta">
+                                <span>VentureBeat</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://venturebeat.com/technology/anthropic-launches-cowork-a-claude-desktop-agent-that-works-in-your-files-no" target="_blank" rel="noopener" data-history-text="Anthropic推出无代码AI代理Cowork，非技术人员也能高效处理文件 Anthropic推出面向非技术人员的桌面AI代理Cowork，通过自然交互操作文件系统。该产品将Claude代码工具能力平民化，开发周期仅用一周，或将加速AI工具在中国企业端的渗透，降低技术使用门槛。 VentureBeat 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">Anthropic推出无代码AI代理Cowork，非技术人员也能高效处理文件</div>
+                            <div class="history-summary">Anthropic推出面向非技术人员的桌面AI代理Cowork，通过自然交互操作文件系统。该产品将Claude代码工具能力平民化，开发周期仅用一周，或将加速AI工具在中国企业端的渗透，降低技术使用门槛。</div>
+                            <div class="history-meta">
+                                <span>VentureBeat</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://venturebeat.com/technology/the-creator-of-claude-code-just-revealed-his-workflow-and-developers-are" target="_blank" rel="noopener" data-history-text="Claude Code创建者公开开发流程，开发者热议其对AI编程的影响 Anthropic工程师Boris Cherny在X平台披露 Claude Code编码模型开发细节，引发全球开发者关注。该分享揭示了AI代码生成工具的优化方向，或将推动中国开发者对提示工程和模型训练方法的革新。 VentureBeat 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">Claude Code创建者公开开发流程，开发者热议其对AI编程的影响</div>
+                            <div class="history-summary">Anthropic工程师Boris Cherny在X平台披露 Claude Code编码模型开发细节，引发全球开发者关注。该分享揭示了AI代码生成工具的优化方向，或将推动中国开发者对提示工程和模型训练方法的革新。</div>
+                            <div class="history-meta">
+                                <span>VentureBeat</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.wired.com/story/anthropic-mythos-preview-project-glasswing/" target="_blank" rel="noopener" data-history-text="Anthropic联合苹果、谷歌等45+机构，用Claude Mythos模型筑牢AI安全防线 Anthropic联合苹果、谷歌等46家机构启动Project Glasswing，利用Claude Mythos Preview模型测试AI安全防护能力。该合作将推动AI安全标准升级，中国开发者需关注跨境安全协作新趋势。 Wired 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">Anthropic联合苹果、谷歌等45+机构，用Claude Mythos模型筑牢AI安全防线</div>
+                            <div class="history-summary">Anthropic联合苹果、谷歌等46家机构启动Project Glasswing，利用Claude Mythos Preview模型测试AI安全防护能力。该合作将推动AI安全标准升级，中国开发者需关注跨境安全协作新趋势。</div>
+                            <div class="history-meta">
+                                <span>Wired</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.wired.com/story/security-news-this-week-hackers-are-posting-the-claude-code-leak-with-bonus-malware/" target="_blank" rel="noopener" data-history-text="Claude代码遭黑客泄露，附加恶意软件引安全危机 据Wired报道，黑客泄露Anthropic的Claude代码并附加恶意软件，可能威胁AI安全。FBI称此次攻击涉及国家安全，Cisco源代码被盗，凸显供应链风险。中国开发者需警惕AI模型代码泄露带来的潜在安全威胁 Wired 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">Claude代码遭黑客泄露，附加恶意软件引安全危机</div>
+                            <div class="history-summary">据Wired报道，黑客泄露Anthropic的Claude代码并附加恶意软件，可能威胁AI安全。FBI称此次攻击涉及国家安全，Cisco源代码被盗，凸显供应链风险。中国开发者需警惕AI模型代码泄露带来的潜在安全威胁</div>
+                            <div class="history-meta">
+                                <span>Wired</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.qbitai.com/2026/04/397942.html" target="_blank" rel="noopener" data-history-text="智谱GLM-5.1模型上线华为云，多产品体验开放 智谱AI与华为云合作，GLM-5.1大模型通过华为云多款产品开放体验，强化国产大模型生态。该模型在参数规模和多模态能力上实现突破，将推动AI技术在企业服务场景的深度应用。 量子位 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">智谱GLM-5.1模型上线华为云，多产品体验开放</div>
+                            <div class="history-summary">智谱AI与华为云合作，GLM-5.1大模型通过华为云多款产品开放体验，强化国产大模型生态。该模型在参数规模和多模态能力上实现突破，将推动AI技术在企业服务场景的深度应用。</div>
+                            <div class="history-meta">
+                                <span>量子位</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.qbitai.com/2026/04/397922.html" target="_blank" rel="noopener" data-history-text="SentiPulse与人大高瓴开源3D数字人框架SentiAvatar，引领行业技术革新 SentiPulse联合人大高瓴开源交互式3D数字人框架SentiAvatar，该框架支持高精度交互，降低开发门槛，推动数字人技术在虚拟会议、娱乐等场景的广泛应用，加速行业技术标准化进程。 量子位 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">SentiPulse与人大高瓴开源3D数字人框架SentiAvatar，引领行业技术革新</div>
+                            <div class="history-summary">SentiPulse联合人大高瓴开源交互式3D数字人框架SentiAvatar，该框架支持高精度交互，降低开发门槛，推动数字人技术在虚拟会议、娱乐等场景的广泛应用，加速行业技术标准化进程。</div>
+                            <div class="history-meta">
+                                <span>量子位</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.aihub.cn/tools/hr/deephire/" target="_blank" rel="noopener" data-history-text="BOSS直聘推出AI招聘工具DeepHire，重塑人岗匹配效率 BOSS直聘推出AI招聘工具DeepHire，通过智能算法优化人岗匹配，提升招聘效率。该工具整合大数据分析，精准筛选候选人，助力企业降低用人成本，推动招聘行业智能化升级 新智元 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">BOSS直聘推出AI招聘工具DeepHire，重塑人岗匹配效率</div>
+                            <div class="history-summary">BOSS直聘推出AI招聘工具DeepHire，通过智能算法优化人岗匹配，提升招聘效率。该工具整合大数据分析，精准筛选候选人，助力企业降低用人成本，推动招聘行业智能化升级</div>
+                            <div class="history-meta">
+                                <span>新智元</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.aihub.cn/tools/video/nadou-pro/" target="_blank" rel="noopener" data-history-text="爱奇艺推出纳逗 Pro：AI影视制作工具助力创作者提升效率 爱奇艺推出专业影视制作智能体纳逗 Pro，支持剧本生成、拍摄建议、剪辑优化全流程创作。该工具通过AI技术降低制作门槛，或推动AI在影视行业从辅助工具向核心生产力转型，对国内内容创作者和影视公司具有显著效率提升价值。 新智元 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">爱奇艺推出纳逗 Pro：AI影视制作工具助力创作者提升效率</div>
+                            <div class="history-summary">爱奇艺推出专业影视制作智能体纳逗 Pro，支持剧本生成、拍摄建议、剪辑优化全流程创作。该工具通过AI技术降低制作门槛，或推动AI在影视行业从辅助工具向核心生产力转型，对国内内容创作者和影视公司具有显著效率提升价值。</div>
+                            <div class="history-meta">
+                                <span>新智元</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.ithome.com/0/937/121.htm" target="_blank" rel="noopener" data-history-text="微星发布第二代MAG Infinite S AI游戏PC：Ultra 7处理器+RTX 5070 Ti显卡 微星推出搭载英特尔酷睿Ultra 7 265处理器和RTX 5070 Ti显卡的AI游戏PC，支持DLSS 4.5和动态多帧生成技术，可实现4K 240FPS游戏体验，推动高端游戏硬件市场升级。 IT之家 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">微星发布第二代MAG Infinite S AI游戏PC：Ultra 7处理器+RTX 5070 Ti显卡</div>
+                            <div class="history-summary">微星推出搭载英特尔酷睿Ultra 7 265处理器和RTX 5070 Ti显卡的AI游戏PC，支持DLSS 4.5和动态多帧生成技术，可实现4K 240FPS游戏体验，推动高端游戏硬件市场升级。</div>
+                            <div class="history-meta">
+                                <span>IT之家</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.qbitai.com/2026/04/397898.html" target="_blank" rel="noopener" data-history-text="智谱GLM-5.1开源模型性能首超Opus4.6 智谱AI发布GLM-5.1开源模型，性能首次超越Meta的Opus4.6，标志着大模型开源领域取得关键突破，或将加速AI技术在工业场景的落地应用。 量子位 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">智谱GLM-5.1开源模型性能首超Opus4.6</div>
+                            <div class="history-summary">智谱AI发布GLM-5.1开源模型，性能首次超越Meta的Opus4.6，标志着大模型开源领域取得关键突破，或将加速AI技术在工业场景的落地应用。</div>
+                            <div class="history-meta">
+                                <span>量子位</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.ithome.com/0/937/126.htm" target="_blank" rel="noopener" data-history-text="SteamGPT曝光：AI助力Valve提升玩家客服效率 Valve开发的SteamGPT AI工具可自动处理玩家举报、退款等高频请求，通过分析账号数据提供解决方案，或将推动游戏行业客服流程智能化转型，降低企业运营成本。 IT之家 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">SteamGPT曝光：AI助力Valve提升玩家客服效率</div>
+                            <div class="history-summary">Valve开发的SteamGPT AI工具可自动处理玩家举报、退款等高频请求，通过分析账号数据提供解决方案，或将推动游戏行业客服流程智能化转型，降低企业运营成本。</div>
+                            <div class="history-meta">
+                                <span>IT之家</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.aihub.cn/go/trae" target="_blank" rel="noopener" data-history-text="字节跳动推出AI代码助手TRAE，助力开发者提效 字节跳动推出AI代码助手TRAE，可智能生成代码片段并优化逻辑结构。相比GitHub Copilot，其在中文代码理解准确率提升27%，或将重构国内开发者工具生态。 新智元 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">字节跳动推出AI代码助手TRAE，助力开发者提效</div>
+                            <div class="history-summary">字节跳动推出AI代码助手TRAE，可智能生成代码片段并优化逻辑结构。相比GitHub Copilot，其在中文代码理解准确率提升27%，或将重构国内开发者工具生态。</div>
+                            <div class="history-meta">
+                                <span>新智元</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="history-item" href="https://www.ithome.com/0/937/142.htm" target="_blank" rel="noopener" data-history-text="倍思磁吸充电宝：AI算法自动识别，22.5W快充仅299元 倍思推出磁吸充电宝，搭载AI算法自动识别连接状态实现22.5W快充，厚度仅6.9mm，售价299元，提升便携性与充电效率，或推动磁吸充电技术普及 IT之家 历史 2026-04-08">
+                        <div class="history-date">2026-04-08</div>
+                        <div>
+                            <div class="history-title">倍思磁吸充电宝：AI算法自动识别，22.5W快充仅299元</div>
+                            <div class="history-summary">倍思推出磁吸充电宝，搭载AI算法自动识别连接状态实现22.5W快充，厚度仅6.9mm，售价299元，提升便携性与充电效率，或推动磁吸充电技术普及</div>
+                            <div class="history-meta">
+                                <span>IT之家</span>
+                                <span class="history-chip">历史</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="footer">
-            🥕 由 AI'm OK v3.2 自动生成 | 2026-05-08 | 国内外 3 源聚合
+            🥕 由 AI'm OK v3.2 自动生成 | 2026-05-11
         </div>
     </div>
     <script>
@@ -320,8 +1727,24 @@
             document.querySelectorAll('.tab-btn').forEach(function(el) {
                 el.classList.remove('active');
             });
+            document.querySelectorAll('.history-entry').forEach(function(el) {
+                el.classList.remove('active');
+            });
             document.getElementById('tab-' + tab).classList.add('active');
             btn.classList.add('active');
+        }
+        function filterHistory() {
+            var input = document.getElementById('historySearch');
+            var query = (input && input.value ? input.value : '').trim().toLowerCase();
+            var visible = 0;
+            document.querySelectorAll('.history-item').forEach(function(el) {
+                var text = (el.getAttribute('data-history-text') || '').toLowerCase();
+                var show = !query || text.indexOf(query) !== -1;
+                el.style.display = show ? 'grid' : 'none';
+                if (show) visible += 1;
+            });
+            var counter = document.getElementById('historyVisibleCount');
+            if (counter) counter.textContent = String(visible);
         }
     </script>
 </body>
