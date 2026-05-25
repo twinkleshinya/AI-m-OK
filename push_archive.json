@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-23T12:03:54.451058+08:00",
+  "updated_at": "2026-05-25T00:00:00+08:00",
   "items": [
     {
       "pushed_date": "2026-05-23",
@@ -767,6 +767,70 @@
       "source_type": "domestic",
       "account_name": "优设AIGC",
       "heat_score": 493.65999999999997,
+      "is_audio": true
+    },
+    {
+      "pushed_date": "2026-05-25",
+      "pushed_at": "2026-05-25T20:20:31.586512+08:00",
+      "section": "国际资讯",
+      "url": "https://techcrunch.com/2026/05/24/i-tried-amazons-bee-wearable-and-am-both-intrigued-and-slightly-creeped-out/",
+      "title": "I tried Amazon’s Bee wearable and am both intrigued and slightly creeped out",
+      "title_zh": "亚马逊Bee可穿戴设备：便捷功能引发隐私担忧",
+      "summary": "Like other AI wearables, Amazon's Bee offers an odd combination of convenience and privacy anxiety.",
+      "summary_zh": "亚马逊推出的AI腕戴设备Bee可记录、转录并总结用户对话，支持日历同步提醒。TechCrunch称其操作简便但存在隐私焦虑，用户对数据安全的担忧可能影响产品接受度。",
+      "source": "TechCrunch",
+      "source_display": "TechCrunch",
+      "source_type": "intl",
+      "account_name": "",
+      "heat_score": 116.58,
+      "is_audio": false
+    },
+    {
+      "pushed_date": "2026-05-25",
+      "pushed_at": "2026-05-25T20:20:31.586990+08:00",
+      "section": "国内资讯",
+      "url": "https://mp.weixin.qq.com/s/Bs9BnPUue0kbITN7Ul8l7g",
+      "title": "太丝滑了！LibTV  团队版正式上线",
+      "title_zh": "LibTV团队版上线：解决协作痛点，助力影视团队高效生产",
+      "summary": "前言 自从有了 AI 后 ， 做视频内容的 圈子里经常能听到说“一个人就是一支队伍”的声音。自己做两段短片练手确实爽，但真到了赶排期交付，对着满屏节点和散碎素材理逻辑时，疲惫感是非常真实的。 既想要拉满产出效率，又要死磕内容质感，单打独斗很难撑起整个盘子，一部片子的背后依然需要一整支队伍在协作、修改和反复对齐 。 过去两个月，LibTV 靠着扎实的效果成了很多专业团队的首选。它上线首日就涌入了10万创作者 ，不到一个月单日收入破百万美金 ，现在已经有超过300家影视和短剧工作室把它当成了主力生产工具 。 来源*小红...",
+      "summary_zh": "LibTV推出团队版功能，通过画布协作、团队资产库和权限管理三大模块，解决影视团队协作效率低、资产重复搭建、内容泄露风险等问题。目前该工具已服务超300家影视工作室，单日收入破百万美元。",
+      "source": "微信公众号",
+      "source_display": "微信公众号",
+      "source_type": "domestic",
+      "account_name": "莫理",
+      "heat_score": 487.16,
+      "is_audio": false
+    },
+    {
+      "pushed_date": "2026-05-25",
+      "pushed_at": "2026-05-25T20:20:31.587003+08:00",
+      "section": "AI音频",
+      "url": "https://mp.weixin.qq.com/s/IAsvXhfLKVev9hDK0NSMrw",
+      "title": "ACE Studio 更新了“世界首款”AI 弦乐组（群奏），AI 铜管音源也有重大更新！",
+      "title_zh": "ACE Studio推出全球首款AI弦乐组，铜管音源升级",
+      "summary": "让我来看看，是哪个小伙伴还不知道 ACE Studio 更新了 AI 弦乐组？",
+      "summary_zh": "ACE Studio推出全球首个AI弦乐组，与布达佩斯艺术管弦乐团合作实现好莱坞级音质，支持MIDI输入自动生成群奏效果。新增三款AI铜管音源，通过智能演奏技法实现高效音乐创作，显著提升AI在影视配乐领域的实用性。",
+      "source": "微信公众号",
+      "source_display": "微信公众号",
+      "source_type": "domestic",
+      "account_name": "钻进盒子里",
+      "heat_score": 186.51999999999998,
+      "is_audio": true
+    },
+    {
+      "pushed_date": "2026-05-25",
+      "pushed_at": "2026-05-25T20:20:31.587010+08:00",
+      "section": "AI音频",
+      "url": "https://mp.weixin.qq.com/s/LVbo1dQ9iuv0RM7wnhJ7cQ",
+      "title": "AirTranslate 适用于 macOS 的实时系统音频转写与翻译应用",
+      "title_zh": "AirTranslate：无需麦克风的 macOS 实时音频翻译神器",
+      "summary": "AirTranslate 可以捕获 Mac 正在播放的音频，实时转写并翻译，也可以通过悬浮字幕窗口显示结果。",
+      "summary_zh": "AirTranslate 通过 Apple ScreenCaptureKit 直接捕获系统音频，实现无需麦克风的实时转写与翻译。其悬浮字幕窗口和多模式支持（Apple 本地模式/OpenAI GPT 模式）解决了传统音频翻译的音质损耗与操作痛点，适用于会议、课程等场景。",
+      "source": "微信公众号",
+      "source_display": "微信公众号",
+      "source_type": "domestic",
+      "account_name": "ITBOX",
+      "heat_score": 234.12,
       "is_audio": true
     }
   ]
